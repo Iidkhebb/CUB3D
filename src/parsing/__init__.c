@@ -24,7 +24,7 @@ int valid_texture(char *line)
     
     i = 0;
     if (!line)
-        return 1;
+        return -1;
     if (ft_strchr(TEXTURES_KEYS, line[i]) && ft_strchr(AFTER_KEY, line[i + 1]) && line[i + 2] == ' ') 
         return (total += (int)line[i], 1);
     if (ft_strchr(RGB_KEY, line[i]) && line[i + 1] == ' ')
@@ -51,17 +51,29 @@ int valid_map(char *line)
 
 int check_walls(char *l_prv, char *l_curr)
 {
-    int i = 0;
-    if (!l_prv && !l_curr)
-        return 1;
-    while (l_curr[i] != '\0')
+    int i;
+
+    i = 0;
+    if (!l_curr && ft_strchr(l_prv, '0'))
+        return 0;
+    else if (l_curr)
     {
-        if (l_curr[i] == ' ')
+        if (l_curr[0] != '1' || l_curr[ft_strlen(l_curr) - 2] != '1')
+                return 0;
+        while (l_curr[i] != '\0')
         {
-            if (i <= ft_strlen(l_prv) && l_prv[i] == '1' && !ft_strchr(PLAYER_POS, l_prv[i]))
-                return 1;           
+            if (!l_prv && l_curr[i] == '0')
+                return 0;
+            if (l_prv && l_curr[i] == ' ')
+            {
+                if (i <= ft_strlen(l_prv) && l_prv[i] == '0' )
+                    return 0;
+            }
+            else if (l_prv && l_prv[i] == ' ')
+                if (i <= ft_strlen(l_curr) && l_curr[i] == '0' )
+                    return 0;
+            i++;
         }
-        i++;
     }
     return 1;
 }
@@ -70,32 +82,29 @@ int check_map(int fd)
 {
     char *line;
     int map_level = 0;
-    char *prv = NULL;
+    char *prv;
 
+    prv = NULL;
     while(line)
     {
         line = get_next_line(fd);
         if (line && check_empty_line(line) && just_free(line))
             continue;
         line = ft_strtrim(line, WHITE_SPACES);
-        
-        
         map_level = valid_texture(line);
         if (!map_level)
             return (ft_putstr_fd(ERR_TEXTURES_KEY, 2), 1);
-        else if (map_level == 454)
+        else if (map_level == 454 || map_level == -1)
         {
-            if (line &&  !valid_map(line))
+            if (line && !valid_map(line))
                 return (ft_putstr_fd(ERR_MAPS_VAL, 2), 1);
             if (!check_walls(prv, line))
                 return (ft_putstr_fd(ERR_MAPS_WALL, 2), 1);
+            free(prv);
+            prv = ft_strdup(line);
         }
-        free(prv);
-        prv = ft_strdup(line);
-        
-        
         printf("%s", line);
-        free(line); 
+        free(line);
     }
     free(prv);
     return 0;
