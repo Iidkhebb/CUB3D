@@ -39,7 +39,6 @@ int valid_map(char *line)
     int i;
 
     i = 0;
-   
     while (line[i] != '\n' && line[i] != '\0')
     {
         if (!ft_strchr(VALID_CHAR, line[i]))
@@ -50,10 +49,28 @@ int valid_map(char *line)
     return 1;
 }
 
+int check_walls(char *l_prv, char *l_curr)
+{
+    int i = 0;
+    if (!l_prv && !l_curr)
+        return 1;
+    while (l_curr[i] != '\0')
+    {
+        if (l_curr[i] == ' ')
+        {
+            if (i <= ft_strlen(l_prv) && l_prv[i] == '1' && !ft_strchr(PLAYER_POS, l_prv[i]))
+                return 1;           
+        }
+        i++;
+    }
+    return 1;
+}
+
 int check_map(int fd)
 {
     char *line;
     int map_level = 0;
+    char *prv = NULL;
 
     while(line)
     {
@@ -61,16 +78,25 @@ int check_map(int fd)
         if (line && check_empty_line(line) && just_free(line))
             continue;
         line = ft_strtrim(line, WHITE_SPACES);
+        
+        
         map_level = valid_texture(line);
         if (!map_level)
             return (ft_putstr_fd(ERR_TEXTURES_KEY, 2), 1);
         else if (map_level == 454)
         {
             if (line &&  !valid_map(line))
-                return (printf("%s\n", line),ft_putstr_fd(ERR_MAPS_VAL, 2), 1);
+                return (ft_putstr_fd(ERR_MAPS_VAL, 2), 1);
+            if (!check_walls(prv, line))
+                return (ft_putstr_fd(ERR_MAPS_WALL, 2), 1);
         }
+        free(prv);
+        prv = ft_strdup(line);
+        
+        
         printf("%s", line);
         free(line); 
     }
+    free(prv);
     return 0;
 }

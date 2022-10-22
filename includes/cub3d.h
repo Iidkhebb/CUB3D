@@ -12,6 +12,7 @@
 #define ERR_PATH "Error : Invalid Map Path\n"
 #define ERR_TEXTURES_KEY "Error : Invalid Textures keys\n"
 #define ERR_MAPS_VAL "Error : Invalid MAP Char\n"
+#define ERR_MAPS_WALL "Error : Invalid MAP WALLS\n"
 #define FAILED  1
 #define SUCCESS  1
 # define WHITE_SPACES " \t\r\f\v"
