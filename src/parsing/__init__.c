@@ -88,7 +88,7 @@ int check_map(int fd)
     while(line)
     {
         line = get_next_line(fd);
-        if (line && check_empty_line(line) && just_free(line))
+        if (line && check_empty_line(line) && just_free(line) && (map_level != 454))
             continue;
         line = ft_strtrim(line, WHITE_SPACES);
         map_level = valid_texture(line);
