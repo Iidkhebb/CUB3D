@@ -81,21 +81,16 @@ int check_walls(char *l_prv, char *l_curr)
     {
         if (l_curr[0] != '1' || l_curr[ft_strlen(l_curr) - 2] != '1')
             return 0;
-        
         while (l_curr[i] != '\0')
         {
             if (!l_prv && l_curr[i] == '0') // check first line
                 return 0;
             if (l_prv && l_curr[i] == ' ') // check last line from space
-            {
                 if (i <= ft_strlen(l_prv) && l_prv[i] == '0' )
                     return 0;
-            }
             if (l_prv && l_prv[i] == ' ') // check first line from space
-            {
                 if (i <= ft_strlen(l_curr) && l_curr[i] == '0' )
                     return 0;
-            }
             i++;
         }
     }
