@@ -1,6 +1,6 @@
 NAME = cub3D
 CFLAGS = 
-FRAME = -lmlx -framework OpenGL -framework AppKit -Ofast
+FRAME = -lmlx -framework OpenGL -framework AppKit -Oz
 CC = gcc
 
 INC =  includes/cub3d.h

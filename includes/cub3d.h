@@ -13,8 +13,10 @@
 #define ERR_TEXTURES_KEY "Error : Invalid Textures keys\n"
 #define ERR_MAPS_VAL "Error : Invalid MAP Char\n"
 #define ERR_MAPS_WALL "Error : Invalid MAP WALLS\n"
+#define ERR_MAPS_PLAYER "Error : Invalid Player\n"
+#define ERR_MAPS_ENDLINE "Error : Invalid MAPS endline\n"
 #define FAILED  1
-#define SUCCESS  1
+#define SUCCESS  0
 # define WHITE_SPACES " \t\r\f\v"
 #define TEXTURES_KEYS "NSWE"
 #define AFTER_KEY "OEA"
