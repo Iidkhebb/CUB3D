@@ -15,6 +15,8 @@
 #define ERR_MAPS_WALL "Error : Invalid MAP WALLS\n"
 #define ERR_MAPS_PLAYER "Error : Invalid Player\n"
 #define ERR_MAPS_ENDLINE "Error : Invalid MAPS endline\n"
+#define ERR_TEXTURES_PATH "Error : Invalid Textures Path\n"
+#define ERR_RGB_VAL "Error : Invalid RGB Values\n"
 #define FAILED  1
 #define SUCCESS  0
 # define WHITE_SPACES " \t\r\f\v"
@@ -29,13 +31,23 @@
 // DEFINES
 
 
-// typedef struct maps
-// {
+typedef struct map_data
+{
+    int NO;
+    int SO;
+    int WE;
+    int EA;
 
-// }
+    int C[3];
+    int F[3];
+
+    char **map_lines;
+} t_map_data;
 
 
 int basic_init(int ac, char *av[]);
 int check_map(int fd);
 int check_empty_line(char *line);
+int scraper(t_map_data *scrape, int fd);
+int just_free(char *line);
 #endif

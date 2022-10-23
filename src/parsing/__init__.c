@@ -76,7 +76,6 @@ int check_walls(char *l_prv, char *l_curr)
     int i;
 
     i = 0;
-
     if (l_curr)
     {
         if (l_curr[0] != '1' || l_curr[ft_strlen(l_curr) - 2] != '1')
@@ -97,13 +96,18 @@ int check_walls(char *l_prv, char *l_curr)
     return 1;
 }
 
+
+
 int check_map(int fd)
 {
     char *line;
-    int map_level = 0;
+    int map_level;
     char *prv;
-    int is_done = 0;
+    int is_done;
     static int player = 0;
+    
+    is_done = 0;
+    map_level = 0;
     prv = NULL;
     while(line)
     {
@@ -124,7 +128,6 @@ int check_map(int fd)
         {
             if (is_done && !check_empty_line(line))
                 return (ft_putstr_fd(ERR_MAPS_ENDLINE, 2), 1);
-            
             check_player_pos(line, &player);
             if (!valid_map(line))
                 return (ft_putstr_fd(ERR_MAPS_VAL, 2), 1);
@@ -134,7 +137,7 @@ int check_map(int fd)
             free(prv);
             prv = ft_strdup(line);
         }
-        printf("%s", line);
+        // printf("%s", line);
         free(line);
     }
     if (player != 1)
