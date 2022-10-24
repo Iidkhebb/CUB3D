@@ -1,39 +1,51 @@
 #include "../../includes/cub3d.h"
 
-int check_open(char *path, char *line, t_map_data *scrape)
+int check_open(char *path, char *line, t_map_data **scrape)
 {
     int fd;
+    char *new_path;
 
-    fd = open(ft_substr(path, 0, ft_strlen(path) - 1), O_RDONLY);
-    printf("%s | fd:%d\n", path, fd);
+    new_path = ft_substr(path, 0, ft_strlen(path) - 1);
+    fd = open(new_path, O_RDONLY);
     if (fd < 0)
     {
         free(line);
-        free(scrape);
+        free(*scrape);
         ft_putstr_fd(ERR_TEXTURES_PATH, 2);
         return (close(fd), exit(FAILED), 1);
     }
+    free(new_path);
     return fd ;
 }
 
-int get_textures_val(char *line, t_map_data *scrape)
+int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
 {
+    t_map_data *s;
+
     if (!line)
         return 1;
-    
-    if (!ft_strcmp("NO ", ft_substr(line, 0, 3)))
-        scrape->NO = check_open(ft_strtrim(&line[3], WHITE_SPACES), line, scrape);
-    else if (!ft_strcmp("SO ", ft_substr(line, 0, 3)))
-        scrape->SO = check_open(ft_strtrim(&line[3], WHITE_SPACES), line, scrape);
-    else if (!ft_strcmp("WE ", ft_substr(line, 0, 3)))
-        scrape->WE = check_open(ft_strtrim(&line[3], WHITE_SPACES), line, scrape);
-    else if (!ft_strcmp("EA ", ft_substr(line, 0, 3)))
-        scrape->EA = check_open(ft_strtrim(&line[3], WHITE_SPACES), line, scrape);
+
+    s = *scrape;
+    if (!ft_strcmp( "NO ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
+        s->NO = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
+    else if (!ft_strcmp("SO ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
+        s->SO = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
+    else if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
+        s->WE = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
+    else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
+        s->EA = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
     
     return 1;
 }
 
-int *process_RGB_data(char *line, t_map_data *scrape)
+int range(int n)
+{
+    if (n >= 0 && n <= 255)
+        return 1;
+    return 0;
+}
+
+int *process_RGB_data(char *line, t_map_data **scrape)
 {
     char **RGB;
     static int  out[3];
@@ -42,7 +54,7 @@ int *process_RGB_data(char *line, t_map_data *scrape)
     if (!RGB || !RGB[2] || !RGB[1] || !RGB[0])
     {
         free(line);
-        free(scrape);
+        free(*scrape);
         ft_putstr_fd(ERR_RGB_VAL, 2);
         exit(FAILED);
     }
@@ -50,53 +62,70 @@ int *process_RGB_data(char *line, t_map_data *scrape)
     out[0] = ft_atoi(RGB[0]);
     out[1] = ft_atoi(RGB[1]);
     out[2] = ft_atoi(RGB[2]);
+    
+    free(RGB[0]);
+    free(RGB[1]);
+    free(RGB[2]);
+    free(RGB);
+
+    if (!(range(out[0]) && !range(out[1]) && !range(out[2])))
+    {
+        ft_putstr_fd(ERR_RGB_RNG, 2);
+        exit(FAILED);
+    }
     return out;
 }
 
-int get_RGB_val(char *line, t_map_data *scrape)
+int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
 {
     int *RGB;
+    t_map_data *s;
 
     if (!line)
         return 1;
-
-    if (!ft_strcmp("C ", ft_substr(line, 0, 2)))
+    s = *scrape;
+    if (!ft_strcmp("C ", garbage(junk_list, ft_substr(line, 0, 2))))
     {
-        RGB = process_RGB_data(ft_strtrim(ft_substr(&line[2], 0, ft_strlen(&line[2]) - 1), WHITE_SPACES), scrape);
-        scrape->C[0] = RGB[0];
-        scrape->C[1] = RGB[1];
-        scrape->C[2] = RGB[2];
+        RGB = process_RGB_data(garbage(junk_list , ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
+        // s->C[0] = RGB[0];
+        // s->C[1] = RGB[1];
+        // s->C[2] = RGB[2];
     }
-    else if (!ft_strcmp("F ", ft_substr(line, 0, 2)))
-    {
-        RGB = process_RGB_data(ft_strtrim(ft_substr(&line[2], 0, ft_strlen(&line[2]) - 1), WHITE_SPACES), scrape);
-        scrape->F[0] = RGB[0];
-        scrape->F[1] = RGB[1];
-        scrape->F[2] = RGB[2];
-    }
+    // else if (!ft_strcmp("F ", garbage(junk_list, ft_substr(line, 0, 2))))
+    // {
+    //     RGB = process_RGB_data(garbage(junk_list , ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
+    //     scrape->F[0] = RGB[0];
+    //     scrape->F[1] = RGB[1];
+    //     scrape->F[2] = RGB[2];
+    // }
     return 1;
 }
 
-int scraper(t_map_data *scrape, int fd)
+t_map_data *scraper(int fd)
 {
     char *line;
+    t_garbage		*junk_list;
 
-    scrape = malloc(sizeof(t_map_data *));
+    t_map_data *scrape;
+
+    junk_list = NULL;
+    scrape = (t_map_data *)malloc(sizeof(t_map_data *));
     if (!scrape)
         return 0;
     while (line)
     {
         line = get_next_line(fd);
-        if ((line && check_empty_line(line) && just_free(line)))
+        garbage(&junk_list, line);
+        if ((line && check_empty_line(line, &junk_list)))
             continue;
         
         line = ft_strtrim(line, WHITE_SPACES);
-        get_textures_val(line, scrape);
-        get_RGB_val(line, scrape);
+        garbage(&junk_list, line);
+        get_textures_val(line, &scrape, &junk_list);
         
-        free(line);
+        get_RGB_val(line, &scrape, &junk_list);
+ 
     }
-    printf("%d,%d,%d\n", scrape->C[0], scrape->C[1], scrape->C[2]);
-    printf("%d,%d,%d\n", scrape->F[0], scrape->F[1], scrape->F[2]);
-    return 1;
+    list_free(&junk_list);
+    return scrape;
 }

@@ -13,7 +13,7 @@ int check_empty_line(char *line, t_garbage **junk)
     check = ft_strtrim(line, WHITE_SPACES);
 	garbage(junk, check);
 	if (check[0] == '\n')
-		return (free(check), 1);
+		return (1);
 	return (0);
 }
 

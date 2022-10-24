@@ -17,6 +17,7 @@
 #define ERR_MAPS_ENDLINE "Error : Invalid MAPS endline\n"
 #define ERR_TEXTURES_PATH "Error : Invalid Textures Path\n"
 #define ERR_RGB_VAL "Error : Invalid RGB Values\n"
+#define ERR_RGB_RNG "Error : Invalid RGB OUT OF RANGE\n"
 #define FAILED  1
 #define SUCCESS  0
 # define WHITE_SPACES " \t\r\f\v"
@@ -57,11 +58,11 @@ typedef struct s_garbage
 int basic_init(int ac, char *av[]);
 int check_map(int fd);
 int check_empty_line(char *line, t_garbage **junk);
-int scraper(t_map_data *scrape, int fd);
+t_map_data *scraper(int fd);
 int just_free(char *line);
 
 
-int garbage(t_garbage **junk, char *line);
+char *garbage(t_garbage **junk, char *line);
 t_garbage	*ft_lstnew(char *junk);
 t_garbage	*ft_lstlast(t_garbage *lst);
 void	ft_lstadd_back(t_garbage **lst, t_garbage *new);

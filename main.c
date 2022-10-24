@@ -2,11 +2,13 @@
 
 int main(int ac, char *av[])
 {
-    t_map_data *scrape;
     int fd; 
+    t_map_data *scrape;
 
     check_map(basic_init(ac, av));
-    // scraper(scrape, basic_init(ac, av));
-    // system("leaks cub3D");
+    scrape = scraper(basic_init(ac, av));
+    printf("->%d\n", scrape->EA);
+    free(scrape);
+    system("leaks cub3D");
     return (0);
 }

@@ -77,7 +77,7 @@ int check_walls(char *l_prv, char *l_curr)
     i = 0;
     if (l_curr)
     {
-        if (l_curr[0] != '1' || l_curr[ft_strlen(l_curr) - 2] != '1')
+        if ((l_curr[0] != '1') || (l_curr[ft_strlen(l_curr) - 2]) != '1')
             return 0;
         while (l_curr[i] != '\0')
         {
@@ -95,12 +95,12 @@ int check_walls(char *l_prv, char *l_curr)
     return 1;
 }
 
-int garbage(t_garbage **junk, char *line)
+char *garbage(t_garbage **junk, char *line)
 {
     if (!line)
-        return 1;
+        return NULL;
     ft_lstadd_back(junk, ft_lstnew(line));
-    return 1;
+    return line;
 }
 
 
