@@ -1,5 +1,5 @@
 NAME = cub3D
-CFLAGS = 
+CFLAGS = -g
 FRAME = -lmlx -framework OpenGL -framework AppKit -Oz
 CC = gcc
 
