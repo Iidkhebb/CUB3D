@@ -1,8 +1,7 @@
 #include "../../includes/cub3d.h"
-
 int just_free(char *line)
 {
-    return (free(line), 1);
+    return 1;
 }
 
 int basic_init(int ac, char *av[])
@@ -96,52 +95,63 @@ int check_walls(char *l_prv, char *l_curr)
     return 1;
 }
 
+int garbage(t_garbage **junk, char *line)
+{
+    if (!line)
+        return 1;
+    ft_lstadd_back(junk, ft_lstnew(line));
+    return 1;
+}
 
 
 int check_map(int fd)
 {
+    t_garbage		*junk_list;
     char *line;
     int map_level;
-    char *prv;
+    static char *prv;
     int is_done;
     static int player = 0;
     
     is_done = 0;
     map_level = 0;
     prv = NULL;
+    junk_list = NULL;
     while(line)
     {
         line = get_next_line(fd);
-        if ((line && check_empty_line(line) && just_free(line) && (map_level != 454)) || (is_done && check_empty_line(line)))
+        garbage(&junk_list, line);
+        if ((line && check_empty_line(line, &junk_list) && (map_level != 454)) || (is_done && check_empty_line(line, &junk_list)))
             continue;
         line = ft_strtrim(line, WHITE_SPACES);
+        garbage(&junk_list, line);
         map_level = valid_texture(line);
         if (!map_level)
-            return (ft_putstr_fd(ERR_TEXTURES_KEY, 2), 1);
-        else if ((prv && check_empty_line(line)) || (prv && !line))
+            return (ft_putstr_fd(ERR_TEXTURES_KEY, 2), list_free(&junk_list), 1);
+        else if ((prv && check_empty_line(line, &junk_list)) || (prv && !line))
         {
             if (ft_strchr(prv, '0'))
-                return (ft_putstr_fd(ERR_MAPS_WALL, 2), 1);
+                return (ft_putstr_fd(ERR_MAPS_WALL, 2),list_free(&junk_list), 1);
             is_done = 1;
         }
         else if ((map_level == 454 || map_level == -1))
         {
-            if (is_done && !check_empty_line(line))
-                return (ft_putstr_fd(ERR_MAPS_ENDLINE, 2), 1);
+            if (is_done && !check_empty_line(line, &junk_list))
+                return (ft_putstr_fd(ERR_MAPS_ENDLINE, 2),list_free(&junk_list), 1);
             check_player_pos(line, &player);
             if (!valid_map(line))
-                return (ft_putstr_fd(ERR_MAPS_VAL, 2), 1);
+                return (ft_putstr_fd(ERR_MAPS_VAL, 2), list_free(&junk_list), 1);
+
             if (!check_walls(prv, line))
-                return (ft_putstr_fd(ERR_MAPS_WALL, 2), 1);
+                return (ft_putstr_fd(ERR_MAPS_WALL, 2), list_free(&junk_list), 1);
             
-            free(prv);
-            prv = ft_strdup(line);
+            prv = line;
         }
-        // printf("%s", line);
-        free(line);
     }
+   
     if (player != 1)
-        return (ft_putstr_fd(ERR_MAPS_PLAYER, 2), 1);
-    free(prv);
+        return (ft_putstr_fd(ERR_MAPS_PLAYER, 2), list_free(&junk_list), 1);
+
+    list_free(&junk_list);
     return 0;
 }
