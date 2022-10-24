@@ -7,8 +7,17 @@ int main(int ac, char *av[])
 
     check_map(basic_init(ac, av));
     scrape = scraper(basic_init(ac, av));
-
+    
+    // while (scrape->data)
+    // {
+    //     printf("%s", scrape->data->line);
+    //     scrape->data = scrape->data->next;
+    // }
+    
+    
+    list_free_map(&scrape);
     free(scrape);
-    system("leaks cub3D");
+
+    // system("leaks cub3D");
     return (0);
 }

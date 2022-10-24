@@ -29,8 +29,6 @@
 #define PLAYER_POS "NSEW"
 #define VALID_CHAR "10 NSEW"
 
-// DEFINES
-
 
 typedef struct s_map_data
 {
@@ -41,9 +39,16 @@ typedef struct s_map_data
 
     int C[3];
     int F[3];
-
-    char **map_lines;
+    struct s_maplines *data;
 } t_map_data;
+
+typedef struct s_maplines
+{
+    char *line;
+    struct s_maplines *next;
+} t_maplines;
+
+
 
 typedef struct s_garbage
 {
@@ -67,4 +72,9 @@ t_garbage	*ft_lstnew(char *junk);
 t_garbage	*ft_lstlast(t_garbage *lst);
 void	ft_lstadd_back(t_garbage **lst, t_garbage *new);
 void	list_free(t_garbage **list);
+
+t_maplines	*ft_lstnew_map(char *line);
+t_maplines	*ft_lstlast_map(t_maplines *lst);
+void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new);
+void	list_free_map(t_map_data **list);
 #endif

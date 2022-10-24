@@ -99,13 +99,30 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     return 1;
 }
 
+int get_MAP_val(t_maplines **scrape, char *line)
+{
+
+    if (line &&  ((line[0] != '1') || (line[ft_strlen(line) - 2]) != '1'))
+    {
+        return 1;
+    }
+    else
+    {
+        ft_lstadd_back_map(scrape, ft_lstnew_map(line));
+    }
+    return 1;
+}
+
 t_map_data *scraper(int fd)
 {
     char        *line;
     t_garbage   *junk_list;
     t_map_data  *scrape;
+    t_maplines  *map;
+
 
     junk_list = NULL;
+    map = NULL;
     scrape = (t_map_data *)malloc(sizeof(t_map_data));
     if (!scrape)
         return 0;
@@ -120,7 +137,9 @@ t_map_data *scraper(int fd)
         garbage(&junk_list, line);
         get_textures_val(line, &scrape, &junk_list);
         get_RGB_val(line, &scrape, &junk_list);
+        get_MAP_val(&map, line);
     }
     list_free(&junk_list);
+    scrape->data = map;
     return scrape;
 }
