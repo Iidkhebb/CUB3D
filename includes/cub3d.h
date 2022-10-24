@@ -77,4 +77,7 @@ t_maplines	*ft_lstnew_map(char *line);
 t_maplines	*ft_lstlast_map(t_maplines *lst);
 void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new);
 void	list_free_map(t_map_data **list);
+
+
+void mlx_warper();
 #endif

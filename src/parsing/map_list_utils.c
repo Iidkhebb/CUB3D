@@ -51,11 +51,7 @@ void	list_free_map(t_map_data **list)
 	while (l->data)
 	{
 		tmp = l->data->next;
-		if (*l->data->line)
-		{
-			printf("%s", l->data->line);
-			free(l->data->line);
-		}
+		free(l->data->line);
 		free(l->data);
 		l->data = tmp;
 	}

@@ -4,8 +4,8 @@ FRAME = -lmlx -framework OpenGL -framework AppKit -Oz
 CC = gcc
 
 INC =  includes/cub3d.h
-SRCS = main.c src/parsing/__init__.c src/parsing/parsing_utils.c src/parsing/scrape_value.c src/draw/__mlx_init__.c \
-src/parsing/map_list_utils.c
+SRCS = main.c src/parsing/__init__.c src/parsing/parsing_utils.c src/parsing/scrape_value.c  \
+src/parsing/map_list_utils.c src/draw/__mlx_init__.c
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_DIR = LIBFT
