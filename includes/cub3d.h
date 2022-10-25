@@ -29,7 +29,7 @@
 #define PLAYER_POS "NSEW"
 #define VALID_CHAR "10 NSEW"
 
-
+// STRUCTS
 typedef struct s_map_data
 {
     int NO;
@@ -40,7 +40,21 @@ typedef struct s_map_data
     int C[3];
     int F[3];
     struct s_maplines *data;
+    struct s_mlx_img *img;
+    
 } t_map_data;
+
+typedef struct s_mlx_img
+{
+    void *img;
+    char *addr;
+    int bits_per_pixel;
+    int line_length;
+    int endian;
+
+    void	*mlx;
+	void	*mlx_win;
+} t_mlx_img;
 
 typedef struct s_maplines
 {
@@ -57,9 +71,7 @@ typedef struct s_garbage
     struct s_garbage *next;
 } t_garbage;
 
-
-
-
+// PROTOTYPES
 int basic_init(int ac, char *av[]);
 int check_map(int fd);
 int check_empty_line(char *line, t_garbage **junk);
@@ -79,5 +91,5 @@ void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new);
 void	list_free_map(t_map_data **list);
 
 
-void mlx_warper();
+void mlx_warper(t_map_data *scrape);
 #endif
