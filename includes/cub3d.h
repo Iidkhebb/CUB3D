@@ -59,7 +59,9 @@ typedef struct s_mlx_img
 	void	*mlx_win;
 
     // KEYBOARD
-    int key_hook;
+    int key_press;
+    int key_release;
+    // MOUSE
     int mouse_x;
     int mouse_y;
     int mouse_hook;

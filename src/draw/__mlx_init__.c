@@ -8,7 +8,6 @@ int close_window(t_map_data *ptr)
 }
 int mouse_hook(int button,	t_map_data *ptr)
 {
-	// printf("Hello from mouse_hook! -> %d \n", button);
 	ptr->img->mouse_hook = button;
 	return (0);
 }
@@ -36,6 +35,24 @@ int	create_trgb(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
+
+int key_press(int keycode, t_map_data *ptr)
+{
+	if (keycode == 53)
+	{
+		mlx_destroy_window(ptr->img->mlx, ptr->img->mlx_win);
+		close_window(ptr);
+	}
+	ptr->img->key_press = keycode;
+	return (0);
+}
+
+int key_release(int keycode, t_map_data *ptr)
+{
+	ptr->img->key_release = keycode;
+	return (0);
+}
+
 int	render_next_frame(t_map_data *ptr)
 {
 	int x = -1;
@@ -50,23 +67,6 @@ int	render_next_frame(t_map_data *ptr)
 		}
 	}
 	return (mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img, 0, 0));
-}
-
-int key_press(int keycode, t_map_data *ptr)
-{
-	if (keycode == 53)
-	{
-		mlx_destroy_window(ptr->img->mlx, ptr->img->mlx_win);
-		close_window(ptr);
-	}
-	ptr->img->mouse_x = 0;
-	return (0);
-}
-
-int key_release(int keycode, t_map_data *ptr)
-{
-	ptr->img->mouse_x = keycode * 10;
-	return (0);
 }
 
 void window_init(t_map_data *scrape)
