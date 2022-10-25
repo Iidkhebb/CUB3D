@@ -62,6 +62,7 @@ typedef struct s_mlx_img
     int key_hook;
     int mouse_x;
     int mouse_y;
+    int mouse_hook;
 } t_mlx_img;
 
 typedef struct s_maplines
