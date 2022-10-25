@@ -113,6 +113,40 @@ int get_MAP_val(t_maplines **scrape, char *line)
     return 1;
 }
 
+int	ft_lstsize(t_maplines *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst)
+    {
+        lst = lst->next;
+        i++;
+    }
+	return (i);
+}
+
+char **convert_list_2_tab(t_maplines *list)
+{
+	t_maplines	*tmp;
+	t_maplines	*lst;
+    char **map;
+	int i = 0;
+    tmp = list;
+    lst = list;
+    map = malloc(sizeof(char *) * ft_lstsize(tmp));
+    if (!map)
+        return NULL;
+
+	while (lst)
+	{
+		map[i] = lst->line;
+        lst = lst->next;
+		i++;
+	} 
+	return map;
+}
+
 t_map_data *scraper(int fd)
 {
     char        *line;
@@ -141,5 +175,6 @@ t_map_data *scraper(int fd)
     }
     list_free(&junk_list);
     scrape->data = map;
+    scrape->map = convert_list_2_tab(map);
     return scrape;
 }

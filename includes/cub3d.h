@@ -42,6 +42,8 @@ typedef struct s_map_data
 
     int C[3];
     int F[3];
+
+    char **map;
     struct s_maplines *data;
     struct s_mlx_img *img;
     

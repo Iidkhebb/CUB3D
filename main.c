@@ -9,7 +9,7 @@ int main(int ac, char *av[])
     check_map(basic_init(ac, av));
     scrape = scraper(basic_init(ac, av));
     tmp = scrape;
-
+   
     mlx_warper(scrape);
 
     list_free_map(&scrape);

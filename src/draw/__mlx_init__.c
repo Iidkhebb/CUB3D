@@ -6,11 +6,6 @@ int close_window(t_map_data *ptr)
 	exit(0);
 	return (0);
 }
-int mouse_hook(int button,	t_map_data *ptr)
-{
-	ptr->img->mouse_hook = button;
-	return (0);
-}
 
 int mouse_move_hook(int x, int y, t_map_data *ptr)
 {
@@ -86,7 +81,6 @@ void window_init(t_map_data *scrape)
 	mlx_hook(ptr->mlx_win,2, 0, key_press, scrape);
 	mlx_hook(ptr->mlx_win,3, 0, key_release,scrape);
 	mlx_hook(ptr->mlx_win,6, 0, mouse_move_hook, scrape);
-	mlx_mouse_hook(ptr->mlx_win, mouse_hook, scrape);
 	mlx_hook(ptr->mlx_win,17, 0, close_window, scrape);
 
 	

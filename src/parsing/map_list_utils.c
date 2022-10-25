@@ -48,6 +48,7 @@ void	list_free_map(t_map_data **list)
 	l = *list;
 	if (!l->data)
 		return ;
+
 	while (l->data)
 	{
 		tmp = l->data->next;
