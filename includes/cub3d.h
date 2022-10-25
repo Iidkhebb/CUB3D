@@ -29,6 +29,9 @@
 #define PLAYER_POS "NSEW"
 #define VALID_CHAR "10 NSEW"
 
+#define WIDTH 1280
+#define HEIGHT 720
+
 // STRUCTS
 typedef struct s_map_data
 {
@@ -54,6 +57,11 @@ typedef struct s_mlx_img
 
     void	*mlx;
 	void	*mlx_win;
+
+    // KEYBOARD
+    int key_hook;
+    int mouse_x;
+    int mouse_y;
 } t_mlx_img;
 
 typedef struct s_maplines
