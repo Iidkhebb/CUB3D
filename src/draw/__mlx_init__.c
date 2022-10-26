@@ -17,13 +17,6 @@ int mouse_move_hook(int x, int y, t_map_data *ptr)
 /// ---------------------------- mlx_warper ---------------------------- ///
 
 
-void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->img->addr + (y * data->img->line_length + x * (data->img->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
 
 int	create_trgb(int t, int r, int g, int b)
 {
@@ -33,11 +26,16 @@ int	create_trgb(int t, int r, int g, int b)
 
 int key_press(int keycode, t_map_data *ptr)
 {
-	if (keycode == 53)
+	if (keycode == ESC)
 	{
 		mlx_destroy_window(ptr->img->mlx, ptr->img->mlx_win);
 		close_window(ptr);
 	}
+	if (keycode == LEFT)
+		ptr->p_angle -= ROTATION_SPEED;
+	else if (keycode == RIGHT)
+		ptr -> p_angle += ROTATION_SPEED;
+
 	ptr->img->key_press = keycode;
 	return (0);
 }
@@ -48,20 +46,54 @@ int key_release(int keycode, t_map_data *ptr)
 	return (0);
 }
 
+void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->img->addr + (y * data->img->line_length + x * (data->img->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+void get_distance(t_map_data *ptr)
+{
+	float y = 2.5;
+	float x = 3.5;
+
+	float angle = ptr->p_angle - (FIELD_OF_VIEW / 2);
+	int i = 0;
+	while (i < WIDTH)
+	{
+		while (ptr->map[(int)y][(int)x] != '1')
+		{
+			x += cos(angle);
+			y += sin(angle);
+		}
+		ptr->dists[i] = hypot(x - 3.5, y - 2.5);
+		y = 2.5;
+		x = 3.5;
+		printf("%f\n", ptr->dists[i]);
+		
+		i++;
+		angle += (FIELD_OF_VIEW / WIDTH);
+	}
+}
+
 int	render_next_frame(t_map_data *ptr)
 {
 	int x = -1;
 	int y;
 
+	get_distance(ptr);
 	while (++x < WIDTH)
 	{
 		y = -1;
 		while (++y < HEIGHT)
 		{
-			my_mlx_pixel_put(ptr, x, y, create_trgb(ptr->img->mouse_x, ptr->img->mouse_x, 100, 0)); // <- to be changed
+			my_mlx_pixel_put(ptr, x, y, create_trgb(250,250,250, 255)); // <- to be changed
 		}
 	}
-	return (mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img, 0, 0));
+	mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img, 0, 0);
+	return (1);
 }
 
 void window_init(t_map_data *scrape)
@@ -71,7 +103,10 @@ void window_init(t_map_data *scrape)
 	ptr = malloc(sizeof(t_mlx_img));
 	if (!ptr)
 		return ;
+	scrape->dists = ft_calloc(sizeof(float), WIDTH);
+	scrape->p_angle = M_PI / 6;
 	scrape->img = ptr;
+	
 	ptr->mlx = mlx_init();
 	ptr->mlx_win = mlx_new_window(ptr->mlx, WIDTH, HEIGHT, "cub3D");
 	ptr->img = mlx_new_image(ptr->mlx, WIDTH, HEIGHT);

@@ -126,6 +126,61 @@ int	ft_lstsize(t_maplines *lst)
 	return (i);
 }
 
+int get_greatest_line_len(t_maplines *list)
+{
+    int i;
+    int len;
+    int max;
+    t_maplines *tmp;
+
+    i = 0;
+    len = 0;
+    max = 0;
+    tmp = list;
+    while (tmp)
+    {
+        len = ft_strlen(tmp->line);
+        if (len > max)
+            max = len;
+        tmp = tmp->next;
+        i++;
+    }
+    return max;
+}
+
+
+char *append_zero(char *line, int max_len)
+{
+    int i;
+    int len;
+    char *new_line;
+
+    if (!line)
+        return NULL;
+    i = 0;
+    len = ft_strlen(line);
+    new_line = (char *)malloc(sizeof(char) * (max_len + 1));
+
+    if (!new_line)
+        return NULL;
+    while (i < len && line[i] != '\n')
+    {
+        if (line[i] == ' ')
+            new_line[i] = '0';
+        else
+            new_line[i] = line[i];
+        i++;
+    }
+    while (i < max_len - 1)
+    {
+        new_line[i] = '0';
+        i++;
+    }
+    new_line[i] = '\0';
+    return new_line;
+}
+
+
 char **convert_list_2_tab(t_maplines *list)
 {
 	t_maplines	*tmp;
@@ -137,10 +192,10 @@ char **convert_list_2_tab(t_maplines *list)
     map = malloc(sizeof(char *) * ft_lstsize(tmp));
     if (!map)
         return NULL;
-
+    int max = get_greatest_line_len(lst);
 	while (lst)
 	{
-		map[i] = lst->line;
+		map[i] = append_zero(lst->line, max);
         lst = lst->next;
 		i++;
 	} 

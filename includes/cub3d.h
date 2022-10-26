@@ -5,6 +5,7 @@
 #include <mlx.h>
 # include "../LIBFT/libft.h"
 # include "../GNL/get_next_line.h"
+#include <math.h>
 
 // DEFINES
 
@@ -28,9 +29,24 @@
 #define FIELD 0
 #define PLAYER_POS "NSEW"
 #define VALID_CHAR "10 NSEW"
-
+#define FIELD_OF_VIEW (M_PI / 3)
 #define WIDTH 1280
 #define HEIGHT 720
+
+
+# define W 13
+# define S 1
+# define A 0
+# define D 2
+# define ESC 53
+# define UP 126
+# define DOWN 125
+# define LEFT 123
+# define RIGHT 124
+# define EXIT 69
+
+# define ROTATION_SPEED 0.1
+
 
 // STRUCTS
 typedef struct s_map_data
@@ -44,6 +60,8 @@ typedef struct s_map_data
     int F[3];
 
     char **map;
+    float p_angle;
+    float *dists;
     struct s_maplines *data;
     struct s_mlx_img *img;
     
