@@ -14,6 +14,7 @@ void init_player(t_map_data *ptr)
     ptr->is_pressed_D = 0;
     ptr->is_pressed_LEFT = 0;
     ptr->is_pressed_RIGHT = 0;
+    
 }
 
 void get_player_pos(t_map_data *ptr)
@@ -37,7 +38,6 @@ void get_player_pos(t_map_data *ptr)
         i++;
     }
     init_player(ptr);
-    printf("Player position: row:%f, col:%f\n", ptr->posX, ptr->posY);
 }
 
 void change_player_pos(t_map_data *ptr, int keycode)
@@ -60,7 +60,6 @@ void change_player_pos(t_map_data *ptr, int keycode)
             ptr->map[ptr->p_x + 1][ptr->p_y] = 'N';
             // ptr->p_x++;
         }
-
     }
     else if (keycode == A)
     {
@@ -70,7 +69,6 @@ void change_player_pos(t_map_data *ptr, int keycode)
             ptr->map[ptr->p_x][ptr->p_y - 1] = 'N';
             // ptr->p_y--;
         }
-
     }
     else if (keycode == D)
     {

@@ -9,8 +9,26 @@ int close_window(t_map_data *ptr)
 
 int mouse_move_hook(int x, int y, t_map_data *ptr)
 {
+	if (x < ptr->img->mouse_x && (x <= WIDTH && x >= 0))
+	{
+		ptr->dirX = ptr->dirX * cos(0.02) - ptr->dirY * sin(0.02);
+		ptr->dirY = ptr->dirX * sin(0.02) + ptr->dirY * cos(0.02);
+		ptr->planeX = ptr->planeX * cos(0.02) - ptr->planeY * sin(0.02);
+		ptr->planeY = ptr->planeX * sin(0.02) + ptr->planeY * cos(0.02);
+		
+	}
+	else if (x > ptr->img->mouse_x && (x <= WIDTH && x >= 0))
+	{
+		ptr->dirX = ptr->dirX * cos(-0.02) - ptr->dirY * sin(-0.02);
+		ptr->dirY = ptr->dirX * sin(-0.02) + ptr->dirY * cos(-0.02);
+		ptr->planeX = ptr->planeX * cos(-0.02) - ptr->planeY * sin(-0.02);
+		ptr->planeY = ptr->planeX * sin(-0.02) + ptr->planeY * cos(-0.02);
+		
+	}
+
 	ptr->img->mouse_x = x;
 	ptr->img->mouse_y = y;
+
 	return (0);
 }
 
@@ -99,13 +117,8 @@ void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-
-
-int	render_next_frame(t_map_data *ptr)
+void _3D_mouvements(t_map_data *ptr)
 {
-	int x = -1;
-	int y;
-
 	if (ptr->is_pressed_W)
 	{
 		ptr->posX += ptr->dirX * 0.1;
@@ -140,10 +153,13 @@ int	render_next_frame(t_map_data *ptr)
 		ptr->planeX = ptr->planeX * cos(-0.05) - ptr->planeY * sin(-0.05);
 		ptr->planeY = ptr->planeX * sin(-0.05) + ptr->planeY * cos(-0.05);
 	}
-	
+}
+
+int	render_next_frame(t_map_data *ptr)
+{
+	_3D_mouvements(ptr);
 	ray_casting(ptr);
 	mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img, 0, 0);
-
 
 	// mini_map(ptr);
 	return (1);
@@ -159,7 +175,9 @@ void window_init(t_map_data *scrape)
 	scrape->dists = ft_calloc(sizeof(float), WIDTH);
 	scrape->p_angle = M_PI / 6;
 	scrape->img = ptr;
-	
+	ptr->mouse_x = 0;
+    ptr->mouse_y = 0;
+
 	ptr->mlx = mlx_init();
 	ptr->mlx_win = mlx_new_window(ptr->mlx, WIDTH, HEIGHT, "cub3D");
 	ptr->img = mlx_new_image(ptr->mlx, WIDTH, HEIGHT);
