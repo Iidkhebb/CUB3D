@@ -43,13 +43,25 @@ int range(int n)
     return 0;
 }
 
+int double_array_len(char **array)
+{
+    int i;
+
+    i = 0;
+    while (array[i])
+        i++;
+    return i;
+}
+
 int *process_RGB_data(char *line, t_map_data **scrape)
 {
     char **RGB;
     static int  out[3];
+    int len;
 
     RGB = ft_split(line, ',');
-    if (!RGB || !RGB[2] || !RGB[1] || !RGB[0])
+    len = (double_array_len(RGB));
+    if (!RGB || !RGB[2] || !RGB[1] || !RGB[0] || len != 3)
     {
         free(line);
         free(*scrape);
@@ -60,7 +72,7 @@ int *process_RGB_data(char *line, t_map_data **scrape)
     out[0] = ft_atoi(RGB[0]);
     out[1] = ft_atoi(RGB[1]);
     out[2] = ft_atoi(RGB[2]);
-    
+
     free(RGB[0]);
     free(RGB[1]);
     free(RGB[2]);
@@ -159,7 +171,7 @@ char *append_zero(char *line, int max_len)
         return NULL;
     i = 0;
     len = ft_strlen(line);
-    new_line = (char *)malloc(sizeof(char) * (max_len + 1));
+    new_line = (char *)malloc(sizeof(char) * (max_len));
 
     if (!new_line)
         return NULL;
@@ -171,12 +183,13 @@ char *append_zero(char *line, int max_len)
             new_line[i] = line[i];
         i++;
     }
-    while (i < max_len - 1)
+    while (i < max_len)
     {
         new_line[i] = '0';
         i++;
     }
     new_line[i] = '\0';
+    printf("%s\n", new_line);
     return new_line;
 }
 

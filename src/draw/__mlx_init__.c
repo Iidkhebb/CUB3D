@@ -31,19 +31,64 @@ int key_press(int keycode, t_map_data *ptr)
 		mlx_destroy_window(ptr->img->mlx, ptr->img->mlx_win);
 		close_window(ptr);
 	}
+	if (keycode == W)
+	{
+		ptr->is_pressed_W = 1;
+	}
+	if (keycode == S)
+	{
+		ptr->is_pressed_S = 1;
+	}
+	if (keycode == A)
+	{
+		ptr->is_pressed_A = 1;
+	}
+	if (keycode == D)
+	{
+		ptr->is_pressed_D = 1;
+	}
 	if (keycode == LEFT)
-		ptr->p_angle -= ROTATION_SPEED;
-	else if (keycode == RIGHT)
-		ptr -> p_angle += ROTATION_SPEED;
-
-	ptr->img->key_press = keycode;
+	{
+		ptr->is_pressed_LEFT = 1;
+	}
+	if (keycode == RIGHT)
+	{
+		ptr->is_pressed_RIGHT = 1;
+	}
+	change_player_pos(ptr, ptr->img->key_press);
 	return (0);
 }
 
 int key_release(int keycode, t_map_data *ptr)
 {
 	ptr->img->key_release = keycode;
+	if (keycode == W)
+	{
+		ptr->is_pressed_W = 0;
+	}
+	if (keycode == S)
+	{
+		ptr->is_pressed_S = 0;
+	}
+	if (keycode == A)
+	{
+		ptr->is_pressed_A = 0;
+	}
+	if (keycode == D)
+	{
+		ptr->is_pressed_D = 0;
+	}
+	if (keycode == LEFT)
+	{
+		ptr->is_pressed_LEFT = 0;
+	}
+	if (keycode == RIGHT)
+	{
+		ptr->is_pressed_RIGHT = 0;
+	}
 	return (0);
+
+
 }
 
 void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
@@ -54,45 +99,53 @@ void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void get_distance(t_map_data *ptr)
-{
-	float y = 2.5;
-	float x = 3.5;
 
-	float angle = ptr->p_angle - (FIELD_OF_VIEW / 2);
-	int i = 0;
-	while (i < WIDTH)
-	{
-		while (ptr->map[(int)y][(int)x] != '1')
-		{
-			x += cos(angle);
-			y += sin(angle);
-		}
-		ptr->dists[i] = hypot(x - 3.5, y - 2.5);
-		y = 2.5;
-		x = 3.5;
-		printf("%f\n", ptr->dists[i]);
-		
-		i++;
-		angle += (FIELD_OF_VIEW / WIDTH);
-	}
-}
 
 int	render_next_frame(t_map_data *ptr)
 {
 	int x = -1;
 	int y;
 
-	get_distance(ptr);
-	while (++x < WIDTH)
+	if (ptr->is_pressed_W)
 	{
-		y = -1;
-		while (++y < HEIGHT)
-		{
-			my_mlx_pixel_put(ptr, x, y, create_trgb(250,250,250, 255)); // <- to be changed
-		}
+		ptr->posX += ptr->dirX * 0.1;
+		ptr->posY += ptr->dirY * 0.1;
 	}
+	if (ptr->is_pressed_S)
+	{
+		ptr->posX -= ptr->dirX * 0.1;
+		ptr->posY -= ptr->dirY * 0.1;
+	}
+	if (ptr->is_pressed_A)
+	{
+		ptr->posX -= ptr->dirY * 0.1;
+		ptr->posY += ptr->dirX * 0.1;
+	}
+	if (ptr->is_pressed_D)
+	{
+		ptr->posX += ptr->dirY * 0.1;
+		ptr->posY -= ptr->dirX * 0.1;
+	}
+	if (ptr->is_pressed_LEFT)
+	{
+		ptr->dirX = ptr->dirX * cos(0.05) - ptr->dirY * sin(0.05);
+		ptr->dirY = ptr->dirX * sin(0.05) + ptr->dirY * cos(0.05);
+		ptr->planeX = ptr->planeX * cos(0.05) - ptr->planeY * sin(0.05);
+		ptr->planeY = ptr->planeX * sin(0.05) + ptr->planeY * cos(0.05);
+	}
+	if (ptr->is_pressed_RIGHT)
+	{
+		ptr->dirX = ptr->dirX * cos(-0.05) - ptr->dirY * sin(-0.05);
+		ptr->dirY = ptr->dirX * sin(-0.05) + ptr->dirY * cos(-0.05);
+		ptr->planeX = ptr->planeX * cos(-0.05) - ptr->planeY * sin(-0.05);
+		ptr->planeY = ptr->planeX * sin(-0.05) + ptr->planeY * cos(-0.05);
+	}
+	
+	ray_casting(ptr);
 	mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img, 0, 0);
+
+
+	// mini_map(ptr);
 	return (1);
 }
 
@@ -126,6 +179,8 @@ void window_init(t_map_data *scrape)
 
 void mlx_warper(t_map_data *scrape)
 {
-    window_init(scrape);
+    get_player_pos(scrape);
+	scrape->length_line = ft_strlen(scrape->map[0]);
+	window_init(scrape);
 	
 }

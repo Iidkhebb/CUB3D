@@ -29,7 +29,9 @@
 #define FIELD 0
 #define PLAYER_POS "NSEW"
 #define VALID_CHAR "10 NSEW"
-#define FIELD_OF_VIEW (M_PI / 3)
+
+
+#define BOX_SIZE 30
 #define WIDTH 1280
 #define HEIGHT 720
 
@@ -47,7 +49,6 @@
 
 # define ROTATION_SPEED 0.1
 
-
 // STRUCTS
 typedef struct s_map_data
 {
@@ -60,11 +61,49 @@ typedef struct s_map_data
     int F[3];
 
     char **map;
-    float p_angle;
-    float *dists;
     struct s_maplines *data;
     struct s_mlx_img *img;
+    int length_line;
+    // Player
+    float p_angle;
+    float *dists;
+    int p_x;
+    int p_y;
     
+    // Ray
+    double posX;
+    double posY;
+
+    double dirX;
+    double dirY;
+
+    double planeX;
+    double planeY;
+
+    double cameraX;
+    double rayDirX;
+    double rayDirY;
+
+    int mapX;
+    int mapY;
+
+    double deltaDistX;
+    double deltaDistY;
+    double sideDistX;
+    double sideDistY;
+    double perpWallDist;
+    int stepX;
+    int stepY;
+    int lineHeight;
+    int drawStart;
+    int drawEnd;
+    int is_pressed_W;
+    int is_pressed_S;
+    int is_pressed_A;
+    int is_pressed_D;
+
+    int is_pressed_LEFT;
+    int is_pressed_RIGHT;
 } t_map_data;
 
 typedef struct s_mlx_img
@@ -116,11 +155,18 @@ t_garbage	*ft_lstlast(t_garbage *lst);
 void	ft_lstadd_back(t_garbage **lst, t_garbage *new);
 void	list_free(t_garbage **list);
 
+
+void ray_casting(t_map_data *ptr);
+void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color);
+
 t_maplines	*ft_lstnew_map(char *line);
 t_maplines	*ft_lstlast_map(t_maplines *lst);
 void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new);
 void	list_free_map(t_map_data **list);
-
-
+void mini_map(t_map_data *ptr);
+int	create_trgb(int t, int r, int g, int b);
+int get_greatest_line_len(t_maplines *list);
 void mlx_warper(t_map_data *scrape);
+void get_player_pos(t_map_data *ptr);
+void get_player_pos(t_map_data *ptr);void change_player_pos(t_map_data *ptr, int keycode);
 #endif
