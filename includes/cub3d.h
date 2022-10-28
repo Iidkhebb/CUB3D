@@ -61,10 +61,12 @@ typedef struct s_map_data
     int F[3];
 
     char **map;
+    // structs
     struct s_maplines *data;
     struct s_mlx_img *img;
-    int length_line;
+    
     // Player
+    int length_line;
     float p_angle;
     float *dists;
     int p_x;
@@ -154,7 +156,7 @@ t_garbage	*ft_lstnew(char *junk);
 t_garbage	*ft_lstlast(t_garbage *lst);
 void	ft_lstadd_back(t_garbage **lst, t_garbage *new);
 void	list_free(t_garbage **list);
-
+int	ft_lstsize(t_maplines *lst);
 
 void ray_casting(t_map_data *ptr);
 void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color);

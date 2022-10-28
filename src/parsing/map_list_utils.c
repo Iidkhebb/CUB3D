@@ -9,6 +9,7 @@ t_maplines	*ft_lstnew_map(char *line)
 		return (0);
 	
 	new->line = ft_strdup(line);
+	// printf("%s", new->line);
 	new->next = NULL;
 	return (new);
 }

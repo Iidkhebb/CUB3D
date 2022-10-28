@@ -189,7 +189,6 @@ char *append_zero(char *line, int max_len)
         i++;
     }
     new_line[i] = '\0';
-    printf("%s\n", new_line);
     return new_line;
 }
 
