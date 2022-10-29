@@ -154,8 +154,17 @@ int check_walls(char **tab)
             {
                 if((tab[i][j] == '0' && tab[i + 1][j] == ' ') || (tab[i][j] == '0' && tab[i - 1][j] == ' '))
                     return (0);
-              
-   
+                
+                if (ft_strlen(tab[i]) > ft_strlen(tab[i - 1]))
+                {
+                    if (tab[i][j] == '0' && j > ft_strlen(tab[i - 1]))
+                        return (0);
+                }
+                else if (ft_strlen(tab[i]) > ft_strlen(tab[i + 1]))
+                {
+                    if (tab[i][j] == '0' && j > ft_strlen(tab[i + 1]))
+                        return (0);
+                }
                 j++;
             }
 
