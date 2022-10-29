@@ -73,7 +73,7 @@ int key_press(int keycode, t_map_data *ptr)
 	{
 		ptr->is_pressed_RIGHT = 1;
 	}
-	change_player_pos(ptr, ptr->img->key_press);
+	change_player_pos(ptr, keycode);
 	return (0);
 }
 
@@ -167,9 +167,9 @@ int	render_next_frame(t_map_data *ptr)
 {
 	_3D_mouvements(ptr);
 	ray_casting(ptr);
+	mini_map(ptr);
 	mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img, 0, 0);
 
-	// mini_map(ptr);
 	return (1);
 }
 
@@ -206,6 +206,7 @@ void window_init(t_map_data *scrape)
 void mlx_warper(t_map_data *scrape)
 {
     get_player_pos(scrape);
+	printf("player pos: %d, %d\n", scrape->p_x_mini, scrape->p_y_mini);
 	scrape->length_line = ft_strlen(scrape->map[0]);
 	window_init(scrape);
 	

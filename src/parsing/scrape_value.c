@@ -175,14 +175,14 @@ char *append_zero(char *line, int max_len)
     while (i < len && line[i] != '\n')
     {
         if (ft_strchr(WHITE_SPACES, line[i]))
-            new_line[i] = '0';
+            new_line[i] = '-';
         else
             new_line[i] = line[i];
         i++;
     }
     while (i < max_len)
     {
-        new_line[i] = '0';
+        new_line[i] = '-';
         i++;
     }
     new_line[i] = '\0';
@@ -238,5 +238,6 @@ t_map_data *scraper(int fd, char **raw_map)
     }
     list_free(&junk_list);
     scrape->map = convert_map(raw_map);
+    scrape->map_MINI = convert_map(raw_map);
     return scrape;
 }

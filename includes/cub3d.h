@@ -61,6 +61,7 @@ typedef struct s_map_data
     int F[3];
 
     char **map;
+    char **map_MINI;
     // structs
     struct s_maplines *data;
     struct s_mlx_img *img;
@@ -69,8 +70,10 @@ typedef struct s_map_data
     int length_line;
     float p_angle;
     float *dists;
-    int p_x;
-    int p_y;
+    double p_x;
+    double p_y;
+    int p_x_mini;
+    int p_y_mini;
     
     // Ray
     double posX;

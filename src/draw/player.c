@@ -14,6 +14,7 @@ void init_player(t_map_data *ptr)
     ptr->is_pressed_D = 0;
     ptr->is_pressed_LEFT = 0;
     ptr->is_pressed_RIGHT = 0;
+
     
 }
 
@@ -32,6 +33,8 @@ void get_player_pos(t_map_data *ptr)
             {
                 ptr->p_x = i;
                 ptr->p_y = j;
+                ptr->p_x_mini = i;
+                ptr->p_y_mini = j;
             }
             j++;
         }
@@ -40,43 +43,3 @@ void get_player_pos(t_map_data *ptr)
     init_player(ptr);
 }
 
-void change_player_pos(t_map_data *ptr, int keycode)
-{
-    if (keycode == W)
-    {
-        if (ptr->map[ptr->p_x - 1][ptr->p_y] == '0')
-        {
-            ptr->map[ptr->p_x][ptr->p_y] = '0';
-            ptr->map[ptr->p_x - 1][ptr->p_y] = 'N';
-            // ptr->p_x--;
-        }
-
-    }
-    else if (keycode == S)
-    {
-        if (ptr->map[ptr->p_x + 1][ptr->p_y] == '0')
-        {
-            ptr->map[ptr->p_x][ptr->p_y] = '0';
-            ptr->map[ptr->p_x + 1][ptr->p_y] = 'N';
-            // ptr->p_x++;
-        }
-    }
-    else if (keycode == A)
-    {
-        if (ptr->map[ptr->p_x][ptr->p_y - 1] == '0')
-        {
-            ptr->map[ptr->p_x][ptr->p_y] = '0';
-            ptr->map[ptr->p_x][ptr->p_y - 1] = 'N';
-            // ptr->p_y--;
-        }
-    }
-    else if (keycode == D)
-    {
-        if (ptr->map[ptr->p_x][ptr->p_y + 1] == '0')
-        {
-            ptr->map[ptr->p_x][ptr->p_y] = '0';
-            ptr->map[ptr->p_x][ptr->p_y + 1] = 'N';
-            // ptr->p_y++;
-        }
-    }
-}
