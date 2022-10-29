@@ -135,9 +135,9 @@ int check_walls(char **tab)
         else if (i == last) // checking last line to have only '1' or ' '
         {
             j = 0;
-            while (tab[last][j] != '\0') // last one has no '\n'
+            while (tab[last][j]  != '\n' && tab[last][j] != '\0') // last one has no '\n'
             {
-                if (!ft_strchr(WHITE_SPACES, tab[last][j]) && tab[last][j] != '1')
+                if (!ft_strchr(" 1", tab[last][j]) && tab[last][j] != '1')
                     return (0);
                 j++;
             }
