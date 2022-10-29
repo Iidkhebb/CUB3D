@@ -92,7 +92,7 @@ void ray_casting(t_map_data *ptr)
                 mapY += ptr->stepY;
                 side = 1;
             }
-            if (map[mapY][mapX] != '0') hit = 1;
+            if (ptr->map[mapX][mapY] != '0') hit = 1;
         }
         
         if (side == 0)

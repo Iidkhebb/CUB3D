@@ -2,8 +2,8 @@
 
 void init_player(t_map_data *ptr)
 {
-    ptr->posY = 2;
-    ptr->posX = 4;
+    ptr->posY = ptr->p_y;
+    ptr->posX = ptr->p_x;
     ptr->dirX = -1;
     ptr->dirY = 0;
     ptr->planeX = 0;

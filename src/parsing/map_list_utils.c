@@ -49,7 +49,7 @@ void	list_free_map(t_map_data **list)
 
 	i = 0;
 	l = *list;
-	if (!l->data || !l->map)
+	if (!l->map)
 		return ;
 	
 	while (l->map[i])
@@ -60,13 +60,6 @@ void	list_free_map(t_map_data **list)
 	free(l->map[i]);
 	free(l->map);
 
-	while (l->data)
-	{
-		tmp = l->data->next;
-		free(l->data->line);
-		free(l->data);
-		l->data = tmp;
-	}
 	*list = NULL;
 	return ;
 }

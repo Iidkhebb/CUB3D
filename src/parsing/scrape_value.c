@@ -138,23 +138,19 @@ int	ft_lstsize(t_maplines *lst)
 	return (i);
 }
 
-int get_greatest_line_len(t_maplines *list)
+int get_greatest_line_len(char **raw_map)
 {
     int i;
     int len;
     int max;
-    t_maplines *tmp;
-
+    
     i = 0;
-    len = 0;
     max = 0;
-    tmp = list;
-    while (tmp)
+    while (raw_map[i])
     {
-        len = ft_strlen(tmp->line);
+        len = ft_strlen(raw_map[i]);
         if (len > max)
             max = len;
-        tmp = tmp->next;
         i++;
     }
     return max;
@@ -175,9 +171,10 @@ char *append_zero(char *line, int max_len)
 
     if (!new_line)
         return NULL;
+    
     while (i < len && line[i] != '\n')
     {
-        if (line[i] == ' ')
+        if (ft_strchr(WHITE_SPACES, line[i]))
             new_line[i] = '0';
         else
             new_line[i] = line[i];
@@ -193,37 +190,35 @@ char *append_zero(char *line, int max_len)
 }
 
 
-char **convert_list_2_tab(t_maplines *list)
+
+char **convert_map(char **raw_map)
 {
-	t_maplines	*tmp;
-	t_maplines	*lst;
     char **map;
-	int i = 0;
-    tmp = list;
-    lst = list;
-    map = malloc(sizeof(char *) * ft_lstsize(tmp));
-    if (!map)
+	int max;
+    int i;
+
+    if (!raw_map)
         return NULL;
-    int max = get_greatest_line_len(lst);
-	while (lst)
-	{
-		map[i] = append_zero(lst->line, max);
-        lst = lst->next;
-		i++;
-	} 
+    i = 0;
+    max = get_greatest_line_len(raw_map);
+    map = (char **)malloc(sizeof(char *) * ( tab_len(raw_map) + 1));
+    while (raw_map[i])
+    {
+        map[i] = append_zero(raw_map[i], max);
+        i++;
+    }
+    map[i] = NULL;
 	return map;
 }
 
-t_map_data *scraper(int fd)
+t_map_data *scraper(int fd, char **raw_map)
 {
     char        *line;
     t_garbage   *junk_list;
     t_map_data  *scrape;
-    t_maplines  *map;
 
 
     junk_list = NULL;
-    map = NULL;
     scrape = (t_map_data *)malloc(sizeof(t_map_data));
     if (!scrape)
         return 0;
@@ -236,12 +231,12 @@ t_map_data *scraper(int fd)
         
         line = ft_strtrim(line, WHITE_SPACES);
         garbage(&junk_list, line);
+        
         get_textures_val(line, &scrape, &junk_list);
         get_RGB_val(line, &scrape, &junk_list);
-        get_MAP_val(&map, line);
+        
     }
     list_free(&junk_list);
-    scrape->data = map;
-    scrape->map = convert_list_2_tab(map);
+    scrape->map = convert_map(raw_map);
     return scrape;
 }

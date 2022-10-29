@@ -121,23 +121,31 @@ void _3D_mouvements(t_map_data *ptr)
 {
 	if (ptr->is_pressed_W)
 	{
-		ptr->posX += ptr->dirX * 0.1;
-		ptr->posY += ptr->dirY * 0.1;
+		if (ptr->map[(int)(ptr->posX + ptr->dirX * 0.5)][(int)(ptr->posY)] == '0')
+			ptr->posX += ptr->dirX * SPEED;
+		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY + ptr->dirY * 1)] == '0')
+			ptr->posY += ptr->dirY * SPEED;
 	}
 	if (ptr->is_pressed_S)
 	{
-		ptr->posX -= ptr->dirX * 0.1;
-		ptr->posY -= ptr->dirY * 0.1;
+		if (ptr->map[(int)(ptr->posX - ptr->dirX * 0.5)][(int)(ptr->posY)] == '0')
+			ptr->posX -= ptr->dirX * SPEED;
+		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY - ptr->dirY * 1)] == '0')
+			ptr->posY -= ptr->dirY * SPEED;
 	}
 	if (ptr->is_pressed_A)
 	{
-		ptr->posX -= ptr->dirY * 0.1;
-		ptr->posY += ptr->dirX * 0.1;
+		if (ptr->map[(int)(ptr->posX - ptr->dirY * 0.5)][(int)(ptr->posY)] == '0')
+			ptr->posX -= ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY + ptr->dirX * 1)] == '0')
+			ptr->posY += ptr->dirX * SPEED;
 	}
 	if (ptr->is_pressed_D)
 	{
-		ptr->posX += ptr->dirY * 0.1;
-		ptr->posY -= ptr->dirX * 0.1;
+		if (ptr->map[(int)(ptr->posX + ptr->dirY * 0.5)][(int)(ptr->posY)] == '0')
+			ptr->posX += ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY - ptr->dirX * 1)] == '0')
+			ptr->posY -= ptr->dirX * SPEED;
 	}
 	if (ptr->is_pressed_LEFT)
 	{

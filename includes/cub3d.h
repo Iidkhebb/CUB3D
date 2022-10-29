@@ -35,7 +35,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 
-
+#define SPEED 0.1
 # define W 13
 # define S 1
 # define A 0
@@ -145,9 +145,9 @@ typedef struct s_garbage
 
 // PROTOTYPES
 int basic_init(int ac, char *av[]);
-int check_map(int fd);
+char **check_map(int fd);
 int check_empty_line(char *line, t_garbage **junk);
-t_map_data *scraper(int fd);
+t_map_data *scraper(int fd, char **raw_map);
 int just_free(char *line);
 
 
@@ -160,14 +160,14 @@ int	ft_lstsize(t_maplines *lst);
 
 void ray_casting(t_map_data *ptr);
 void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color);
-
+int tab_len(char **tab);
 t_maplines	*ft_lstnew_map(char *line);
 t_maplines	*ft_lstlast_map(t_maplines *lst);
 void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new);
 void	list_free_map(t_map_data **list);
 void mini_map(t_map_data *ptr);
 int	create_trgb(int t, int r, int g, int b);
-int get_greatest_line_len(t_maplines *list);
+int get_greatest_line_len(char **raw_map);
 void mlx_warper(t_map_data *scrape);
 void get_player_pos(t_map_data *ptr);
 void get_player_pos(t_map_data *ptr);void change_player_pos(t_map_data *ptr, int keycode);

@@ -202,8 +202,31 @@ char **list_to_tab(t_maplines *list)
     return tab;
 }
 
+int free_tab(char **tab)
+{
+    int i;
+    i = 0;
+    while (tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+    return 0;
+}
 
-int check_map(int fd)
+void free_list(t_maplines *list)
+{
+    t_maplines *tmp;
+    while (list)
+    {
+        tmp = list;
+        list = list->next;
+        free(tmp);
+    }
+}
+
+char **check_map(int fd)
 {
     t_garbage		*junk_list;
     char *line;
@@ -229,7 +252,7 @@ int check_map(int fd)
         garbage(&junk_list, trim);
         map_level = valid_texture(trim);
         if (!map_level)
-            return (ft_putstr_fd(ERR_TEXTURES_KEY, 2), list_free(&junk_list), 1);
+            return (ft_putstr_fd(ERR_TEXTURES_KEY, 2), list_free(&junk_list), exit(1) ,NULL);
         else if ((prv && check_empty_line(line, &junk_list)) || (prv && !line))
         {
             is_done = 1;
@@ -237,7 +260,7 @@ int check_map(int fd)
         else if ((map_level == 454 || map_level == -1))
         {
             if (is_done && !check_empty_line(line, &junk_list))
-                return (ft_putstr_fd(ERR_MAPS_ENDLINE, 2),list_free(&junk_list), 1);
+                return (ft_putstr_fd(ERR_MAPS_ENDLINE, 2),list_free(&junk_list), free_list(maplines),exit(1), NULL);
 
             if (line)
                 ft_lstadd_back_map(&maplines, ft_lstnew_map(line));
@@ -248,8 +271,9 @@ int check_map(int fd)
     // checking walls
     tab = list_to_tab(maplines);
     if (!check_walls(tab))
-        return (ft_putstr_fd(ERR_MAPS_WALL, 2), list_free(&junk_list), 1);
+        return (ft_putstr_fd(ERR_MAPS_WALL, 2), list_free(&junk_list), free_tab(tab) ,exit(1), NULL);
 
     list_free(&junk_list);
-    return 0;
+    free_list(maplines);
+    return tab;
 }
