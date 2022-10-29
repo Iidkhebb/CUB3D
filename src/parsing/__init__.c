@@ -63,7 +63,6 @@ int check_player_pos(char *line, int *is_player)
         if (ft_strchr(PLAYER_POS, line[i]) && (line[i + 1] == '1' || line[i + 1] == '0'))
         {
             *is_player += 1;
-            return  1;
         }
         i++;
     }
@@ -171,9 +170,6 @@ int check_walls(char **tab)
         }
         i++;
     }
-
-
-
     if (p_count != 1)
         return (ft_putstr_fd(ERR_MAPS_PLAYER, 2), 0);
     return 1;
