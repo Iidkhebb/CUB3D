@@ -1,61 +1,39 @@
 #include "../../includes/cub3d.h"
 
+void draw_something(t_map_data *ptr, double i, double j, int color)
+{
+	int x1;
+	int y1;
+
+	x1 = 0;
+	y1 = 0;
+	while (++x1 < SIZE)
+	{
+		y1 = -1;
+		while (++y1 < SIZE)
+			my_mlx_pixel_put(ptr, j * SIZE + x1, i  * SIZE + y1 , color);
+	}
+}
 
 void mini_map(t_map_data *ptr)
 {
-	int i = 0;
-	int j = 0;
-	int SIZE = 8;
+	int i;
+	int j;
 	
+	i = 0;
+	j = 0;
 	while (ptr->map_MINI[i])
 	{
 		j = 0;
 		while (ptr->map_MINI[i][j])
 		{
-			
-			if (ptr->map_MINI[i][j] == '0')
-			{
-				int x1 = 0;
-				int y1 = 0;
-				while (++x1 < SIZE)
-				{
-					y1 = -1;
-					while (++y1 < SIZE)
-					{
-						my_mlx_pixel_put(ptr, j * SIZE + x1, i  * SIZE + y1 -1 , create_trgb(100, 172, 229, 219));
-					}
-				}
-				
-			}
+			if (ft_strchr(PLAYER_POS, ptr->map_MINI[i][j]) || ptr->map_MINI[i][j] == '0')
+				draw_something(ptr, i, j,create_trgb(0, 100, 255, 255));
 			else if (ptr->map_MINI[i][j] == '1')
-			{
-				int x1 = 0;
-				int y1 = 0;
-				while (++x1 < SIZE)
-				{
-					y1 = -1;
-					while (++y1 < SIZE)
-					{
-						my_mlx_pixel_put(ptr, j * SIZE + x1, i  * SIZE + y1 -1, create_trgb(0, 50, 20, 0));
-					}
-				}
-				
-			}
-			else if (ptr->map_MINI[i][j] == 'N' || ptr->map_MINI[i][j] == 'S' || ptr->map_MINI[i][j] == 'E' || ptr->map_MINI[i][j] == 'W')
-			{
-				int x1 = 0;
-				int y1 = 0;
-				while (++x1 < 10)
-				{
-					y1 = -1;
-					while (++y1 < 10)
-					{
-						my_mlx_pixel_put(ptr, ptr->posY * SIZE + x1, ptr->posX  * SIZE + y1, create_trgb(0, 255, 0, 0));
-					}
-				}
-			}
+				draw_something(ptr, i, j, create_trgb(0, 7, 9, 9));
 			j++;
 		}
 		i++;
 	}
+	draw_something(ptr, ptr->posX, ptr->posY, create_trgb(0, 255, 0, 0));
 }

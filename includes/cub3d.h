@@ -30,7 +30,7 @@
 #define PLAYER_POS "NSEW"
 #define VALID_CHAR "10 NSEW"
 
-
+#define SIZE 8
 #define BOX_SIZE 30
 #define WIDTH 1280
 #define HEIGHT 720
@@ -52,10 +52,10 @@
 // STRUCTS
 typedef struct s_map_data
 {
-    int NO;
-    int SO;
-    int WE;
-    int EA;
+    char *NO;
+    char *SO;
+    char *WE;
+    char *EA;
 
     int C[3];
     int F[3];
@@ -65,6 +65,8 @@ typedef struct s_map_data
     // structs
     struct s_maplines *data;
     struct s_mlx_img *img;
+    struct s_textures *tex;
+
     
     // Player
     int length_line;
@@ -122,6 +124,7 @@ typedef struct s_mlx_img
     void	*mlx;
 	void	*mlx_win;
 
+    
     // KEYBOARD
     int key_press;
     int key_release;
@@ -137,7 +140,16 @@ typedef struct s_maplines
     struct s_maplines *next;
 } t_maplines;
 
-
+typedef struct s_textures
+{
+    int     img_width;
+    int		img_height;
+    void	*img;
+	char	*data;
+	int		bpp;
+	int		size_line;
+	int		endian;
+} t_textures;
 
 typedef struct s_garbage
 {

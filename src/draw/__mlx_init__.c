@@ -50,30 +50,17 @@ int key_press(int keycode, t_map_data *ptr)
 		close_window(ptr);
 	}
 	if (keycode == W)
-	{
 		ptr->is_pressed_W = 1;
-	}
 	if (keycode == S)
-	{
 		ptr->is_pressed_S = 1;
-	}
 	if (keycode == A)
-	{
 		ptr->is_pressed_A = 1;
-	}
 	if (keycode == D)
-	{
 		ptr->is_pressed_D = 1;
-	}
 	if (keycode == LEFT)
-	{
 		ptr->is_pressed_LEFT = 1;
-	}
 	if (keycode == RIGHT)
-	{
 		ptr->is_pressed_RIGHT = 1;
-	}
-	change_player_pos(ptr, keycode);
 	return (0);
 }
 
@@ -81,29 +68,17 @@ int key_release(int keycode, t_map_data *ptr)
 {
 	ptr->img->key_release = keycode;
 	if (keycode == W)
-	{
 		ptr->is_pressed_W = 0;
-	}
 	if (keycode == S)
-	{
 		ptr->is_pressed_S = 0;
-	}
 	if (keycode == A)
-	{
 		ptr->is_pressed_A = 0;
-	}
 	if (keycode == D)
-	{
 		ptr->is_pressed_D = 0;
-	}
 	if (keycode == LEFT)
-	{
 		ptr->is_pressed_LEFT = 0;
-	}
 	if (keycode == RIGHT)
-	{
 		ptr->is_pressed_RIGHT = 0;
-	}
 	return (0);
 
 
@@ -173,15 +148,25 @@ int	render_next_frame(t_map_data *ptr)
 	return (1);
 }
 
+void load_texture(t_map_data *ptr, char *filename, t_textures *t)
+{
+	t->img = mlx_xpm_file_to_image(ptr->img->mlx, filename, &t->img_width, &t->img_height);
+	if (!ptr->tex)
+		return;
+	ptr->tex->data = mlx_get_data_addr(ptr->tex->img, &ptr->tex->bpp, &ptr->tex->size_line, &ptr->tex->endian);
+	if (! ptr->tex->data || ptr->tex->img_width != ptr->tex->img_height)
+		return;
+}
+
+
 void window_init(t_map_data *scrape)
 {
     t_mlx_img *ptr;
+	t_textures *tex_ptr;
 	
 	ptr = malloc(sizeof(t_mlx_img));
 	if (!ptr)
 		return ;
-	scrape->dists = ft_calloc(sizeof(float), WIDTH);
-	scrape->p_angle = M_PI / 6;
 	scrape->img = ptr;
 	ptr->mouse_x = 0;
     ptr->mouse_y = 0;
@@ -191,6 +176,15 @@ void window_init(t_map_data *scrape)
 	ptr->img = mlx_new_image(ptr->mlx, WIDTH, HEIGHT);
 	ptr->addr = mlx_get_data_addr(ptr->img, &ptr->bits_per_pixel, &ptr->line_length, &ptr->endian);
 
+
+	tex_ptr = malloc(sizeof(t_textures) * 4);
+	if (tex_ptr == NULL)
+		return;
+	scrape->tex = tex_ptr;
+	load_texture(scrape, scrape->NO, &scrape->tex[0]);
+	load_texture(scrape, scrape->SO, &scrape->tex[1]);
+	load_texture(scrape, scrape->WE, &scrape->tex[2]);
+	load_texture(scrape, scrape->EA, &scrape->tex[3]);
 	
 	mlx_hook(ptr->mlx_win,2, 0, key_press, scrape);
 	mlx_hook(ptr->mlx_win,3, 0, key_release,scrape);
@@ -205,9 +199,8 @@ void window_init(t_map_data *scrape)
 
 void mlx_warper(t_map_data *scrape)
 {
-    get_player_pos(scrape);
-	printf("player pos: %d, %d\n", scrape->p_x_mini, scrape->p_y_mini);
-	scrape->length_line = ft_strlen(scrape->map[0]);
+    
+	get_player_pos(scrape);
 	window_init(scrape);
 	
 }

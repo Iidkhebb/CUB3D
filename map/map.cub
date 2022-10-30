@@ -1,7 +1,7 @@
-NO textures/text1
-SO textures/text2
-WE textures/text3
-EA textures/text4
+NO textures/text1.xpm
+SO textures/text2.xpm
+WE textures/text3.xpm
+EA textures/text4.xpm
 
 C 64,1,232
 F 109,64,37

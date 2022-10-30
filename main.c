@@ -12,7 +12,6 @@ int main(int ac, char *av[])
     scrape = scraper(basic_init(ac, av), map);
     tmp = scrape;
 
-
     mlx_warper(scrape);
     list_free_map(&scrape);
     free(tmp);

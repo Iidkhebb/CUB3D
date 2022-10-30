@@ -7,7 +7,7 @@ CBONUS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.
 CBONUS += ${CFILES}
 OBONUS = ${CBONUS:.c=.o}
 
-CC = gcc
+CC = cc
 W = -c -Wall -Werror -Wextra
 INC = libft.h
 NAME = libft.a

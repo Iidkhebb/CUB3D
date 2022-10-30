@@ -1,6 +1,6 @@
 #include "../../includes/cub3d.h"
 
-int check_open(char *path, char *line, t_map_data **scrape)
+char *check_open(char *path, char *line, t_map_data **scrape)
 {
     int fd;
     char *new_path;
@@ -11,10 +11,12 @@ int check_open(char *path, char *line, t_map_data **scrape)
     {
         free(line);
         ft_putstr_fd(ERR_TEXTURES_PATH, 2);
-        return (close(fd), exit(FAILED), 1);
+        close(fd);
+        exit(FAILED);
     }
-    free(new_path);
-    return fd ;
+    // free(new_path);
+    close(fd);
+    return new_path ;
 }
 
 int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)

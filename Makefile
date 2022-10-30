@@ -1,7 +1,7 @@
 NAME = cub3D
 CFLAGS = -g
 FRAME = -lmlx -framework OpenGL -framework AppKit -Oz
-CC = gcc
+CC = cc
 
 INC =  includes/cub3d.h
 SRCS = main.c src/parsing/__init__.c src/parsing/parsing_utils.c src/parsing/scrape_value.c  \
