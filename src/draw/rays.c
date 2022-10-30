@@ -42,12 +42,9 @@ void draw_screen(t_map_data *ptr, int side, int x) {
 
         else if (y >= ptr->drawStart && y <= ptr->drawEnd)
         {
-            // if (side == 0)
-                tex_y = (int)tex_pos % ptr->tex[0].img_height;
-                my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[0], tex_x, tex_y));
-                tex_pos += step;
-            // else
-                // my_mlx_pixel_put(ptr, x, y, create_trgb(0, 68,141,13) * ((y > (HEIGHT / 2)) ? 3 : 0));
+            tex_y = (int)tex_pos % ptr->tex[0].img_height;
+            my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[0], tex_x, tex_y));
+            tex_pos += step;
         }
         else
             my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->F[0],ptr->F[1],ptr->F[2]));

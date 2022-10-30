@@ -19,8 +19,8 @@ GNL_LIB = $(GNL_DIR)/line.a
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(INC) $(LIBFT_LIB) $(GNL_LIB)
 	@$(CC) $(CFLAGS) $(LIBFT_LIB) $(GNL_LIB) $(OBJS) $(FRAME) -o $(NAME)
+$(NAME): $(OBJS) $(INC) $(LIBFT_LIB) $(GNL_LIB)
 	@echo "\x1B[34mcompiling Project...\x1B[33m"
 
 $(LIBFT_LIB):
