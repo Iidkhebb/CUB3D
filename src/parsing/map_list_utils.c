@@ -42,7 +42,6 @@ void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new)
 
 void	list_free_map(t_map_data **list)
 {
-	t_maplines	*tmp;
 	t_map_data	*l;
 	int i;
 
@@ -59,7 +58,19 @@ void	list_free_map(t_map_data **list)
 	}
 	free(l->map[i]);
 	free(l->map);
+	i = 0;
+	while (l->map_MINI[i])
+	{
+		free(l->map_MINI[i]);
+		i++;
+	}
+	free(l->map_MINI[i]);
+	free(l->map_MINI);
+	free(l->NO);
+	free(l->SO);
+	free(l->WE);
+	free(l->EA);
+	free(l);
 
-	*list = NULL;
 	return ;
 }

@@ -111,6 +111,10 @@ typedef struct s_map_data
 
     int is_pressed_LEFT;
     int is_pressed_RIGHT;
+
+    // textures
+
+    double tex_pos;
 } t_map_data;
 
 typedef struct s_mlx_img
@@ -163,7 +167,6 @@ int basic_init(int ac, char *av[]);
 char **check_map(int fd);
 int check_empty_line(char *line, t_garbage **junk);
 t_map_data *scraper(int fd, char **raw_map);
-int just_free(char *line);
 
 
 char *garbage(t_garbage **junk, char *line);
@@ -185,5 +188,6 @@ int	create_trgb(int t, int r, int g, int b);
 int get_greatest_line_len(char **raw_map);
 void mlx_warper(t_map_data *scrape);
 void get_player_pos(t_map_data *ptr);
-void get_player_pos(t_map_data *ptr);void change_player_pos(t_map_data *ptr, int keycode);
+void get_player_pos(t_map_data *ptr);
+void change_player_pos(t_map_data *ptr, int keycode);
 #endif

@@ -15,6 +15,5 @@ int main(int ac, char *av[])
     mlx_warper(scrape);
     list_free_map(&scrape);
     free(tmp);
-    // system("leaks cub3D");
     return (0);
 }

@@ -11,13 +11,9 @@ unsigned int	get_color(t_textures *ptr, int x, int y)
 			(unsigned char)color[1], (unsigned char)color[0]));
 }
 
-
-void draw_screen(t_map_data *ptr, int side, int x) {
+int  calc_tex_x(t_map_data *ptr, int side)
+{
     double wallx;
-    int tex_x;
-    int tex_y;
-    double step;
-    double tex_pos;
 
     if (side == 0) {
         wallx = ptr->posY + (ptr->perpWallDist * ptr->rayDirY);
@@ -25,30 +21,35 @@ void draw_screen(t_map_data *ptr, int side, int x) {
         wallx = ptr->posX + (ptr->perpWallDist * ptr->rayDirX);
     }
     wallx -= (int)wallx;
-    tex_x = wallx * ((double)ptr->tex[0].img_width);
+    return(wallx * ((double)ptr->tex[0].img_width));
+}
+
+void draw_screen(t_map_data *ptr, int side, int x) 
+{
+    int tex_x;
+    int tex_y;
+    double step;
+    int y;
+    
+    y = -1;
+    tex_x = calc_tex_x(ptr, side);
     step = (double)ptr->tex[0].img_height / ptr->lineHeight;
-
-    if (ptr->lineHeight < HEIGHT) {
-        tex_pos = 0;
-    } else {
-        tex_pos = ((ptr->lineHeight/2) - (HEIGHT/2)) * step;
-    }
-
-    int y = 0;
-    while (y < HEIGHT)
+    if (ptr->lineHeight < HEIGHT)
+        ptr->tex_pos = 0;
+    else 
+        ptr->tex_pos = ((ptr->lineHeight / 2) - (HEIGHT / 2)) * step;
+    while (y++ < HEIGHT)
     {
         if (y < ptr->drawStart)
-            my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->C[0],ptr->C[1],ptr->C[2]) );
-
+            my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->C[0],ptr->C[1],ptr->C[2]));
         else if (y >= ptr->drawStart && y <= ptr->drawEnd)
         {
-            tex_y = (int)tex_pos % ptr->tex[0].img_height;
+            tex_y = (int)ptr->tex_pos % ptr->tex[0].img_height;
             my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[0], tex_x, tex_y));
-            tex_pos += step;
+            ptr->tex_pos += step;
         }
         else
             my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->F[0],ptr->F[1],ptr->F[2]));
-        y++;
     }
 }
 
@@ -78,6 +79,37 @@ void validatd_DIR(t_map_data *ptr, int mapX,int mapY)
     }
 }
 
+void set_draw_start_end(t_map_data *ptr, int side)
+{
+    if (side == 0)
+        ptr->perpWallDist = (ptr->sideDistX - ptr->deltaDistX);
+    else
+        ptr->perpWallDist = (ptr->sideDistY - ptr->deltaDistY);
+    ptr->lineHeight = (int)(HEIGHT / ptr->perpWallDist);
+    ptr->drawStart = (-ptr->lineHeight / 2) + (HEIGHT / 2);
+    if (ptr->drawStart < 0)
+        ptr->drawStart = 0;
+    ptr->drawEnd = (ptr->lineHeight / 2) + (HEIGHT / 2);
+    if (ptr->drawEnd >= HEIGHT)
+        ptr->drawEnd = HEIGHT - 1;
+}
+
+void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side)
+{
+    if (ptr->sideDistX < ptr->sideDistY)
+    {
+        ptr->sideDistX += ptr->deltaDistX;
+        *mapX += ptr->stepX;
+        *side = 0;
+    }
+    else
+    {
+        ptr->sideDistY += ptr->deltaDistY;
+        *mapY += ptr->stepY;
+        *side = 1;
+    }
+}
+
 void ray_casting(t_map_data *ptr)
 {
     int x;
@@ -85,59 +117,26 @@ void ray_casting(t_map_data *ptr)
     int mapY;
     int hit;
     int side;
-    x = 0;
-    mapX = 0;
-    mapY = 0;
+
+    x = -1;
     side = 0;
-
-
-    while (x < WIDTH)
+    while (x++ < WIDTH)
     {
         ptr->cameraX = (2 * x) / (double)WIDTH - 1;
         ptr->rayDirX = ptr->dirX + ptr->planeX * ptr->cameraX;
         ptr->rayDirY = ptr->dirY + ptr->planeY * ptr->cameraX;
-        
-        mapX = (int)ptr->posX ;
-        mapY = (int)ptr->posY ;
-
+        mapX = (int)ptr->posX;
+        mapY = (int)ptr->posY;
         ptr->deltaDistX = fabs(1 / ptr->rayDirX);
         ptr->deltaDistY = fabs(1 / ptr->rayDirY);
         hit = 0;
-
         validatd_DIR(ptr, mapX,mapY);
-
         while (hit == 0)
         {
-            if (ptr->sideDistX < ptr->sideDistY)
-            {
-                ptr->sideDistX += ptr->deltaDistX;
-                mapX += ptr->stepX;
-                side = 0;
-            }
-            else
-            {
-                ptr->sideDistY += ptr->deltaDistY;
-                mapY += ptr->stepY;
-                side = 1;
-            }
+            check_wall_hit(ptr, &mapY, &mapX, &side);
             if (ptr->map[mapX][mapY] != '0') hit = 1;
         }
-        
-        if (side == 0)
-            ptr->perpWallDist = (ptr->sideDistX - ptr->deltaDistX);
-        else
-            ptr->perpWallDist = (ptr->sideDistY - ptr->deltaDistY);
-
-        ptr->lineHeight = (int)(HEIGHT / ptr->perpWallDist);
-        ptr->drawStart = (-ptr->lineHeight / 2) + (HEIGHT / 2);
-        if (ptr->drawStart < 0)
-            ptr->drawStart = 0;
-        ptr->drawEnd = (ptr->lineHeight / 2) + (HEIGHT / 2);
-        if (ptr->drawEnd >= HEIGHT)
-            ptr->drawEnd = HEIGHT - 1;
-
+        set_draw_start_end(ptr, side);
         draw_screen(ptr, side, x);
-        x++;
     }
-    
 }

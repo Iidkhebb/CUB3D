@@ -1,8 +1,4 @@
 #include "../../includes/cub3d.h"
-int just_free(char *line)
-{
-    return 1;
-}
 
 int basic_init(int ac, char *av[])
 {
