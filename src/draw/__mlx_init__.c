@@ -147,10 +147,10 @@ int	render_next_frame(t_map_data *ptr)
 void load_texture(t_map_data *ptr, char *filename, t_textures *t)
 {
 	t->img = mlx_xpm_file_to_image(ptr->img->mlx, filename, &t->img_width, &t->img_height);
-	if (!ptr->tex)
+	if (!t->img)
 		return;
-	ptr->tex->data = mlx_get_data_addr(ptr->tex->img, &ptr->tex->bpp, &ptr->tex->size_line, &ptr->tex->endian);
-	if (! ptr->tex->data || ptr->tex->img_width != ptr->tex->img_height)
+	t->data = mlx_get_data_addr(t->img, &t->bpp, &t->size_line, &t->endian);
+	if (! t->data || t->img_width != t->img_height)
 		return;
 }
 
@@ -158,7 +158,7 @@ void init_textures(t_map_data *scrape)
 {
 	t_textures *tex_ptr;
 	
-	tex_ptr = malloc(sizeof(t_textures) * 4);
+	tex_ptr  = malloc(sizeof(t_textures) * 4);
 	if (tex_ptr == NULL)
 		return;
 	scrape->tex = tex_ptr;

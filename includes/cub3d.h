@@ -76,7 +76,7 @@ typedef struct s_map_data
     double p_y;
     int p_x_mini;
     int p_y_mini;
-    
+    char P_view;
     // Ray
     double posX;
     double posY;
@@ -115,6 +115,7 @@ typedef struct s_map_data
     // textures
 
     double tex_pos;
+    int tex_index;
 } t_map_data;
 
 typedef struct s_mlx_img

@@ -1,5 +1,23 @@
 #include "../../includes/cub3d.h"
 
+void set_which_textures(t_map_data *ptr, int side)
+{
+    if (side == 0)
+    {
+        if (ptr->rayDirX > 0)
+            ptr->tex_index = 1;
+        else    
+            ptr->tex_index = 0;
+    }
+    else
+    {
+        if (ptr->rayDirY > 0)
+            ptr->tex_index = 3;
+        else
+            ptr->tex_index = 2;
+    }
+}
+
 unsigned int	get_color(t_textures *ptr, int x, int y)
 {
 	char	*color;
@@ -21,7 +39,7 @@ int  calc_tex_x(t_map_data *ptr, int side)
         wallx = ptr->posX + (ptr->perpWallDist * ptr->rayDirX);
     }
     wallx -= (int)wallx;
-    return(wallx * ((double)ptr->tex[0].img_width));
+    return(wallx * ((double)ptr->tex[ptr->tex_index].img_width));
 }
 
 void draw_screen(t_map_data *ptr, int side, int x) 
@@ -33,7 +51,7 @@ void draw_screen(t_map_data *ptr, int side, int x)
     
     y = -1;
     tex_x = calc_tex_x(ptr, side);
-    step = (double)ptr->tex[0].img_height / ptr->lineHeight;
+    step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineHeight;
     if (ptr->lineHeight < HEIGHT)
         ptr->tex_pos = 0;
     else 
@@ -44,8 +62,8 @@ void draw_screen(t_map_data *ptr, int side, int x)
             my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->C[0],ptr->C[1],ptr->C[2]));
         else if (y >= ptr->drawStart && y <= ptr->drawEnd)
         {
-            tex_y = (int)ptr->tex_pos % ptr->tex[0].img_height;
-            my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[0], tex_x, tex_y));
+            tex_y = (int)ptr->tex_pos % ptr->tex[ptr->tex_index].img_height;
+            my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[ptr->tex_index], tex_x, tex_y));
             ptr->tex_pos += step;
         }
         else
@@ -110,6 +128,7 @@ void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side)
     }
 }
 
+
 void ray_casting(t_map_data *ptr)
 {
     int x;
@@ -137,6 +156,7 @@ void ray_casting(t_map_data *ptr)
             if (ptr->map[mapX][mapY] != '0') hit = 1;
         }
         set_draw_start_end(ptr, side);
+        set_which_textures(ptr, side);
         draw_screen(ptr, side, x);
     }
 }
