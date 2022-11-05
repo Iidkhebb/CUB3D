@@ -2,20 +2,24 @@
 
 void set_which_textures(t_map_data *ptr, int side)
 {
-    if (side == 0)
-    {
-        if (ptr->rayDirX > 0)
-            ptr->tex_index = 1;
-        else    
-            ptr->tex_index = 0;
-    }
-    else
-    {
-        if (ptr->rayDirY > 0)
-            ptr->tex_index = 3;
-        else
-            ptr->tex_index = 2;
-    }
+
+        if (side == 0 )
+        {
+            if (ptr->rayDirX > 0)
+                ptr->tex_index = 1;
+            else    
+                ptr->tex_index = 0;
+        }
+        else 
+        {
+            if (ptr->rayDirY > 0)
+                ptr->tex_index = 3;
+            else
+                ptr->tex_index = 2;
+        }
+        if(ptr->door_open)
+            ptr->tex_index = 4;
+
 }
 
 unsigned int	get_color(t_textures *ptr, int x, int y)
@@ -114,18 +118,20 @@ void set_draw_start_end(t_map_data *ptr, int side)
 
 void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side)
 {
-    if (ptr->sideDistX < ptr->sideDistY)
-    {
-        ptr->sideDistX += ptr->deltaDistX;
-        *mapX += ptr->stepX;
-        *side = 0;
-    }
-    else
-    {
-        ptr->sideDistY += ptr->deltaDistY;
-        *mapY += ptr->stepY;
-        *side = 1;
-    }
+    
+        if (ptr->sideDistX < ptr->sideDistY)
+        {
+            ptr->sideDistX += ptr->deltaDistX;
+            *mapX += ptr->stepX;
+            *side = 0;
+        }
+        else
+        {
+            ptr->sideDistY += ptr->deltaDistY;
+            *mapY += ptr->stepY;
+            *side = 1;
+        }
+
 }
 
 
@@ -152,8 +158,11 @@ void ray_casting(t_map_data *ptr)
         validatd_DIR(ptr, mapX,mapY);
         while (hit == 0)
         {
+            ptr->door_open = false;
             check_wall_hit(ptr, &mapY, &mapX, &side);
             if (ptr->map[mapX][mapY] != '0') hit = 1;
+            if(ptr->map[mapX][mapY] == 'D')
+                ptr->door_open = true;
         }
         set_draw_start_end(ptr, side);
         set_which_textures(ptr, side);

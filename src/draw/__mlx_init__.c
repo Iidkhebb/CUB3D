@@ -7,6 +7,37 @@ int close_window(t_map_data *ptr)
 	return (0);
 }
 
+
+
+void open_door(t_map_data *ptr)
+{
+	// double		x;
+	// double		y;
+	t_vector	l;
+	t_vector	r;
+
+	ptr->dirX = ptr->dirX * cos(-M_PI / 2) - ptr->dirY * sin(-M_PI / 2);
+	ptr->dirY = ptr->dirX * sin(-M_PI / 2) + ptr->dirY * cos(-M_PI / 2);
+	////
+	ptr->dirX = ptr->dirX * cos(M_PI / 2) - ptr->dirY * sin(M_PI / 2);
+	ptr->dirY = ptr->dirX * sin(M_PI / 2) + ptr->dirY * cos(M_PI / 2);
+	/// 
+	/// 
+	ptr->mapX = ptr->dirX + ptr->dirX;
+	ptr->mapY= ptr->dirY + ptr->dirY;
+	if (ptr->map[(int)ptr->mapY][(int)ptr->mapX] == 'D')
+		ptr->map[(int)ptr->mapY][(int)ptr->mapX] = 'O';
+	else if (ptr->map[(int)ptr->mapY][(int)ptr->mapX] == 'O')
+		ptr->map[(int)ptr->mapY][(int)ptr->mapX] = 'D';
+	if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'D')
+		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'O';
+	else if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'O')
+		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'D';
+	if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'D')
+		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'O';
+	else if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'O')
+		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'D';
+}
 int mouse_move_hook(int x, int y, t_map_data *ptr)
 {
 	if (x < ptr->img->mouse_x && (x <= WIDTH && x >= 0))
@@ -42,6 +73,8 @@ int key_press(int keycode, t_map_data *ptr)
 		mlx_destroy_window(ptr->img->mlx, ptr->img->mlx_win);
 		close_window(ptr);
 	}
+	if(keycode == ESPACE)
+	 open_door(ptr);
 	if (keycode == W)
 		ptr->is_pressed_W = 1;
 	if (keycode == S)
@@ -147,7 +180,7 @@ int	render_next_frame(t_map_data *ptr)
 void load_texture(t_map_data *ptr, char *filename, t_textures *t)
 {
 	t->img = mlx_xpm_file_to_image(ptr->img->mlx, filename, &t->img_width, &t->img_height);
-	if (!t->img)
+	if (!t->img || !filename)
 		return;
 	t->data = mlx_get_data_addr(t->img, &t->bpp, &t->size_line, &t->endian);
 	if (! t->data || t->img_width != t->img_height)
@@ -158,7 +191,7 @@ void init_textures(t_map_data *scrape)
 {
 	t_textures *tex_ptr;
 	
-	tex_ptr  = malloc(sizeof(t_textures) * 4);
+	tex_ptr  = malloc(sizeof(t_textures) * 8);
 	if (tex_ptr == NULL)
 		return;
 	scrape->tex = tex_ptr;
@@ -166,6 +199,10 @@ void init_textures(t_map_data *scrape)
 	load_texture(scrape, scrape->SO, &scrape->tex[1]);
 	load_texture(scrape, scrape->WE, &scrape->tex[2]);
 	load_texture(scrape, scrape->EA, &scrape->tex[3]);
+
+	load_texture(scrape,"textures/door.xpm", &scrape->tex[4]);
+	// load_texture(scrape,"textures/fire/1.xpm", &scrape->tex[5]);
+	// load_texture(scrape,"textures/fire/2.xpm", &scrape->tex[6]);
 }
 
 

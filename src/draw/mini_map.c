@@ -31,6 +31,8 @@ void mini_map(t_map_data *ptr)
 				draw_something(ptr, i, j,create_trgb(0, 100, 255, 255));
 			else if (ptr->map_MINI[i][j] == '1')
 				draw_something(ptr, i, j, create_trgb(0, 7, 9, 9));
+			else if (ptr->map_MINI[i][j] == 'D')
+				draw_something(ptr, i, j, create_trgb(0, 255, 255, 255));
 			j++;
 		}
 		i++;

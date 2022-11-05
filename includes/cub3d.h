@@ -6,6 +6,7 @@
 # include "../LIBFT/libft.h"
 # include "../GNL/get_next_line.h"
 #include <math.h>
+# include<stdbool.h>
 
 // DEFINES
 
@@ -28,7 +29,7 @@
 #define WALL 1
 #define FIELD 0
 #define PLAYER_POS "NSEW"
-#define VALID_CHAR "10 NSEW"
+#define VALID_CHAR "10 DNSEW"
 
 #define SIZE 8
 #define BOX_SIZE 30
@@ -36,6 +37,7 @@
 #define HEIGHT 720
 
 #define SPEED 0.1
+# define ESPACE 49
 # define W 13
 # define S 1
 # define A 0
@@ -66,6 +68,8 @@ typedef struct s_map_data
     struct s_maplines *data;
     struct s_mlx_img *img;
     struct s_textures *tex;
+    struct s_mlx_img *door; // <<
+    bool door_open; // <<
 
     
     // Player
@@ -138,6 +142,11 @@ typedef struct s_mlx_img
     int mouse_y;
     int mouse_hook;
 } t_mlx_img;
+
+typedef struct s_vector {
+	double	x;
+	double	y;
+}				t_vector;
 
 typedef struct s_maplines
 {
