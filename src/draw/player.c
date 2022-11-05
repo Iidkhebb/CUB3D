@@ -37,6 +37,7 @@ void init_player(t_map_data *ptr)
     set_player_first_view(ptr);
     ptr->posY = ptr->p_y;
     ptr->posX = ptr->p_x;
+    ptr->is_open = 0;
     // ptr->dirX = -1;
     // ptr->dirY = 0;
     // ptr->planeX = 0;
@@ -47,6 +48,8 @@ void init_player(t_map_data *ptr)
     ptr->is_pressed_D = 0;
     ptr->is_pressed_LEFT = 0;
     ptr->is_pressed_RIGHT = 0;
+     ptr->save_door_x = 0;
+    ptr->save_door_y = 0;
 
     
 }

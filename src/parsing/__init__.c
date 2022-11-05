@@ -160,6 +160,10 @@ int check_walls(char **tab)
                     if (tab[i][j] == '0' && j > ft_strlen(tab[i + 1]))
                         return (0);
                 }
+                if (ft_strchr("D", tab[i][j]) && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1') )
+                    return (0);
+                // else if (ft_strchr("D", tab[i][j]) && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1') )
+                //     return (0);
                 j++;
             }
 

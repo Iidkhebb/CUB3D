@@ -161,8 +161,20 @@ void ray_casting(t_map_data *ptr)
             ptr->door_open = false;
             check_wall_hit(ptr, &mapY, &mapX, &side);
             if (ptr->map[mapX][mapY] != '0') hit = 1;
+            
             if(ptr->map[mapX][mapY] == 'D')
+            {
                 ptr->door_open = true;
+                if (ptr->is_open == 1)
+                    open_door(ptr, mapX, mapY);
+                ptr->save_door_x = mapX;
+                ptr->save_door_y = mapY;
+            }
+            else if (ptr->is_open == 0)
+            {
+                ptr->map[ptr->save_door_x][ptr->save_door_y] = 'D';
+            }
+
         }
         set_draw_start_end(ptr, side);
         set_which_textures(ptr, side);

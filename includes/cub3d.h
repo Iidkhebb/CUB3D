@@ -120,6 +120,10 @@ typedef struct s_map_data
 
     double tex_pos;
     int tex_index;
+
+    int is_open;
+    int save_door_x;
+    int save_door_y;
 } t_map_data;
 
 typedef struct s_mlx_img
@@ -200,4 +204,7 @@ void mlx_warper(t_map_data *scrape);
 void get_player_pos(t_map_data *ptr);
 void get_player_pos(t_map_data *ptr);
 void change_player_pos(t_map_data *ptr, int keycode);
+
+void open_door(t_map_data *ptr, int x, int y);
+void close_door(t_map_data *ptr, int x, int y);
 #endif

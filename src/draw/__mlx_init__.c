@@ -9,35 +9,22 @@ int close_window(t_map_data *ptr)
 
 
 
-void open_door(t_map_data *ptr)
+void open_door(t_map_data *ptr, int x, int y)
 {
-	// double		x;
-	// double		y;
-	t_vector	l;
-	t_vector	r;
-
-	ptr->dirX = ptr->dirX * cos(-M_PI / 2) - ptr->dirY * sin(-M_PI / 2);
-	ptr->dirY = ptr->dirX * sin(-M_PI / 2) + ptr->dirY * cos(-M_PI / 2);
-	////
-	ptr->dirX = ptr->dirX * cos(M_PI / 2) - ptr->dirY * sin(M_PI / 2);
-	ptr->dirY = ptr->dirX * sin(M_PI / 2) + ptr->dirY * cos(M_PI / 2);
-	/// 
-	/// 
-	ptr->mapX = ptr->dirX + ptr->dirX;
-	ptr->mapY= ptr->dirY + ptr->dirY;
-	if (ptr->map[(int)ptr->mapY][(int)ptr->mapX] == 'D')
-		ptr->map[(int)ptr->mapY][(int)ptr->mapX] = 'O';
-	else if (ptr->map[(int)ptr->mapY][(int)ptr->mapX] == 'O')
-		ptr->map[(int)ptr->mapY][(int)ptr->mapX] = 'D';
-	if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'D')
-		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'O';
-	else if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'O')
-		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'D';
-	if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'D')
-		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'O';
-	else if (ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] == 'O')
-		ptr->map[(int)(ptr->mapY + ptr->mapY)][(int)(ptr->mapX + ptr->mapX)] = 'D';
+	if (ptr->map[x][y] == 'D')
+	{
+		ptr->map[x][y] = '0';
+	}
 }
+
+void close_door(t_map_data *ptr, int x, int y)
+{
+	if (ptr->map[x][y] == '0')
+	{
+		ptr->map[x][y] = 'D';
+	}
+}
+
 int mouse_move_hook(int x, int y, t_map_data *ptr)
 {
 	if (x < ptr->img->mouse_x && (x <= WIDTH && x >= 0))
@@ -74,7 +61,7 @@ int key_press(int keycode, t_map_data *ptr)
 		close_window(ptr);
 	}
 	if(keycode == ESPACE)
-	 open_door(ptr);
+		ptr->is_open = 1;
 	if (keycode == W)
 		ptr->is_pressed_W = 1;
 	if (keycode == S)
@@ -93,6 +80,8 @@ int key_press(int keycode, t_map_data *ptr)
 int key_release(int keycode, t_map_data *ptr)
 {
 	ptr->img->key_release = keycode;
+	if (keycode == ESPACE)
+		ptr->is_open = 0;
 	if (keycode == W)
 		ptr->is_pressed_W = 0;
 	if (keycode == S)
