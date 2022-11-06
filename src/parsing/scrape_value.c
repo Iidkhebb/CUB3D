@@ -55,12 +55,36 @@ int double_array_len(char **array)
     return i;
 }
 
+int count_char(char *line, char c)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (line[i])
+    {
+        if (line[i] == c)
+            count++;
+        i++;
+    }
+    return count;
+}
+
 int *process_RGB_data(char *line, t_map_data **scrape)
 {
     char **RGB;
     static int  out[3];
     int len;
 
+    if (count_char(line, ',') != 2)
+    {
+        free(line);
+        free(*scrape);
+        ft_putstr_fd(ERR_RGB_VAL, 2);
+        exit(FAILED);
+    }
+    
     RGB = ft_split(line, ',');
     len = (double_array_len(RGB));
     if (!RGB || !RGB[2] || !RGB[1] || !RGB[0] || len != 3)

@@ -6,7 +6,7 @@ void set_which_textures(t_map_data *ptr, int side)
         if (side == 0 )
         {
             if (ptr->rayDirX > 0)
-                ptr->tex_index = 1;
+                ptr->tex_index = 5;
             else    
                 ptr->tex_index = 0;
         }
@@ -54,6 +54,8 @@ void draw_screen(t_map_data *ptr, int side, int x)
     int y;
     
     y = -1;
+    static int i = 5;
+    static int frames = 0;
     tex_x = calc_tex_x(ptr, side);
     step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineHeight;
     if (ptr->lineHeight < HEIGHT)
@@ -67,6 +69,25 @@ void draw_screen(t_map_data *ptr, int side, int x)
         else if (y >= ptr->drawStart && y <= ptr->drawEnd)
         {
             tex_y = (int)ptr->tex_pos % ptr->tex[ptr->tex_index].img_height;
+            if(ptr->tex_index == 5)
+            {
+                    frames++;
+                    
+                    ptr->tex_index = i;
+                    
+                    if (frames < 6000)
+                    {
+                        if (i == 10)
+                            i = 5;
+                
+                    }
+                    else
+                    {
+                        frames = 0;
+                        i++;
+                    }
+                    
+            }
             my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[ptr->tex_index], tex_x, tex_y));
             ptr->tex_pos += step;
         }

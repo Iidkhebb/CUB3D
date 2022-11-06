@@ -60,6 +60,13 @@ int check_player_pos(char *line, int *is_player)
         {
             *is_player += 1;
         }
+        
+   
+        if (ft_strchr(PLAYER_POS, line[i]) && (line[i + 1] == ' ' || line[i - 1] == ' '))
+        {
+            *is_player = 5;
+            return 0;
+        }
         i++;
     }
     return 0;
@@ -160,10 +167,14 @@ int check_walls(char **tab)
                     if (tab[i][j] == '0' && j > ft_strlen(tab[i + 1]))
                         return (0);
                 }
-                if (ft_strchr("D", tab[i][j]) && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1') )
+                if (ft_strchr("D", tab[i][j]) && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1')  && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1'))
                     return (0);
-                // else if (ft_strchr("D", tab[i][j]) && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1') )
-                //     return (0);
+                else if (ft_strchr("D", tab[i][j]) && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1') && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1'))
+                    return (0);
+                if (tab[i][j] == '0' && (tab[i][j + 1] == ' ' || tab[i][j - 1] == ' '))
+                    return (0);
+                if (ft_strchr(PLAYER_POS, tab[i][j]) && (tab[i][j + 1] == '1' && tab[i][j - 1] == '1') && (tab[i + 1][j] == '1' && tab[i - 1][j] == '1'))
+                    return (ft_putstr_fd("Error: PLayer invalid position\n", 2), 0);
                 j++;
             }
 
