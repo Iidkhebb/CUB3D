@@ -4,14 +4,14 @@ void set_which_textures(t_map_data *ptr, int side)
 {
     if (side == 0 )
     {
-        if (ptr->rayDirX > 0)
+        if (ptr->raydirx > 0)
             ptr->tex_index = 5;
         else    
             ptr->tex_index = 0;
     }
     else 
     {
-        if (ptr->rayDirY > 0)
+        if (ptr->raydiry > 0)
             ptr->tex_index = 3;
         else
             ptr->tex_index = 2;
@@ -36,9 +36,9 @@ int  calc_tex_x(t_map_data *ptr, int side)
     double wallx;
 
     if (side == 0) {
-        wallx = ptr->posY + (ptr->perpWallDist * ptr->rayDirY);
+        wallx = ptr->posy + (ptr->perpwalldist * ptr->raydiry);
     } else {
-        wallx = ptr->posX + (ptr->perpWallDist * ptr->rayDirX);
+        wallx = ptr->posx + (ptr->perpwalldist * ptr->raydirx);
     }
     wallx -= (int)wallx;
     return(wallx * ((double)ptr->tex[ptr->tex_index].img_width));
@@ -47,30 +47,30 @@ int  calc_tex_x(t_map_data *ptr, int side)
 void set_draw_start_end(t_map_data *ptr, int side)
 {
     if (side == 0)
-        ptr->perpWallDist = (ptr->sideDistX - ptr->deltaDistX);
+        ptr->perpwalldist = (ptr->sidedistx - ptr->deltadistx);
     else
-        ptr->perpWallDist = (ptr->sideDistY - ptr->deltaDistY);
-    ptr->lineHeight = (int)(HEIGHT / ptr->perpWallDist);
-    ptr->drawStart = (-ptr->lineHeight / 2) + (HEIGHT / 2);
-    if (ptr->drawStart < 0)
-        ptr->drawStart = 0;
-    ptr->drawEnd = (ptr->lineHeight / 2) + (HEIGHT / 2);
-    if (ptr->drawEnd >= HEIGHT)
-        ptr->drawEnd = HEIGHT - 1;
+        ptr->perpwalldist = (ptr->sidedisty - ptr->deltadisty);
+    ptr->lineheight = (int)(HEIGHT / ptr->perpwalldist);
+    ptr->drawstart = (-ptr->lineheight / 2) + (HEIGHT / 2);
+    if (ptr->drawstart < 0)
+        ptr->drawstart = 0;
+    ptr->drawend = (ptr->lineheight / 2) + (HEIGHT / 2);
+    if (ptr->drawend >= HEIGHT)
+        ptr->drawend = HEIGHT - 1;
 }
 
-void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side)
+void check_wall_hit(t_map_data *ptr, int *mapy,int *mapx, int *side)
 {
-    if (ptr->sideDistX < ptr->sideDistY)
+    if (ptr->sidedistx < ptr->sidedisty)
     {
-        ptr->sideDistX += ptr->deltaDistX;
-        *mapX += ptr->stepX;
+        ptr->sidedistx += ptr->deltadistx;
+        *mapx += ptr->stepx;
         *side = 0;
     }
     else
     {
-        ptr->sideDistY += ptr->deltaDistY;
-        *mapY += ptr->stepY;
+        ptr->sidedisty += ptr->deltadisty;
+        *mapy += ptr->stepy;
         *side = 1;
     }
 }

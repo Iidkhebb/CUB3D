@@ -29,18 +29,18 @@ int mouse_move_hook(int x, int y, t_map_data *ptr)
 {
 	if (x < ptr->img->mouse_x && (x <= WIDTH && x >= 0))
 	{
-		ptr->dirX = ptr->dirX * cos(0.02) - ptr->dirY * sin(0.02);
-		ptr->dirY = ptr->dirX * sin(0.02) + ptr->dirY * cos(0.02);
-		ptr->planeX = ptr->planeX * cos(0.02) - ptr->planeY * sin(0.02);
-		ptr->planeY = ptr->planeX * sin(0.02) + ptr->planeY * cos(0.02);
+		ptr->dirx = ptr->dirx * cos(0.02) - ptr->dirY * sin(0.02);
+		ptr->dirY = ptr->dirx * sin(0.02) + ptr->dirY * cos(0.02);
+		ptr->planex = ptr->planex * cos(0.02) - ptr->planey * sin(0.02);
+		ptr->planey = ptr->planex * sin(0.02) + ptr->planey * cos(0.02);
 		
 	}
 	else if (x > ptr->img->mouse_x && (x <= WIDTH && x >= 0))
 	{
-		ptr->dirX = ptr->dirX * cos(-0.02) - ptr->dirY * sin(-0.02);
-		ptr->dirY = ptr->dirX * sin(-0.02) + ptr->dirY * cos(-0.02);
-		ptr->planeX = ptr->planeX * cos(-0.02) - ptr->planeY * sin(-0.02);
-		ptr->planeY = ptr->planeX * sin(-0.02) + ptr->planeY * cos(-0.02);
+		ptr->dirx = ptr->dirx * cos(-0.02) - ptr->dirY * sin(-0.02);
+		ptr->dirY = ptr->dirx * sin(-0.02) + ptr->dirY * cos(-0.02);
+		ptr->planex = ptr->planex * cos(-0.02) - ptr->planey * sin(-0.02);
+		ptr->planey = ptr->planex * sin(-0.02) + ptr->planey * cos(-0.02);
 		
 	}
 	ptr->img->mouse_x = x;
@@ -63,17 +63,17 @@ int key_press(int keycode, t_map_data *ptr)
 	if(keycode == ESPACE)
 		ptr->is_open = 1;
 	if (keycode == W)
-		ptr->is_pressed_W = 1;
+		ptr->is_pressed_w = 1;
 	if (keycode == S)
-		ptr->is_pressed_S = 1;
+		ptr->is_pressed_s = 1;
 	if (keycode == A)
-		ptr->is_pressed_A = 1;
+		ptr->is_pressed_a = 1;
 	if (keycode == D)
-		ptr->is_pressed_D = 1;
+		ptr->is_pressed_d = 1;
 	if (keycode == LEFT)
-		ptr->is_pressed_LEFT = 1;
+		ptr->is_pressed_left = 1;
 	if (keycode == RIGHT)
-		ptr->is_pressed_RIGHT = 1;
+		ptr->is_pressed_right = 1;
 	return (0);
 }
 
@@ -83,17 +83,17 @@ int key_release(int keycode, t_map_data *ptr)
 	if (keycode == ESPACE)
 		ptr->is_open = 0;
 	if (keycode == W)
-		ptr->is_pressed_W = 0;
+		ptr->is_pressed_w = 0;
 	if (keycode == S)
-		ptr->is_pressed_S = 0;
+		ptr->is_pressed_s = 0;
 	if (keycode == A)
-		ptr->is_pressed_A = 0;
+		ptr->is_pressed_a = 0;
 	if (keycode == D)
-		ptr->is_pressed_D = 0;
+		ptr->is_pressed_d = 0;
 	if (keycode == LEFT)
-		ptr->is_pressed_LEFT = 0;
+		ptr->is_pressed_left = 0;
 	if (keycode == RIGHT)
-		ptr->is_pressed_RIGHT = 0;
+		ptr->is_pressed_right = 0;
 	return (0);
 }
 
@@ -107,52 +107,52 @@ void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
 
 void _3D_mouvemenst_sides(t_map_data *ptr)
 {
-	if (ptr->is_pressed_D)
+	if (ptr->is_pressed_d)
 	{
-		if (ptr->map[(int)(ptr->posX + ptr->dirY * 0.5)][(int)(ptr->posY)] == '0')
-			ptr->posX += ptr->dirY * SPEED;
-		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY - ptr->dirX * 1)] == '0')
-			ptr->posY -= ptr->dirX * SPEED;
+		if (ptr->map[(int)(ptr->posx + ptr->dirY * 0.5)][(int)(ptr->posy)] == '0')
+			ptr->posx += ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy - ptr->dirx * 1)] == '0')
+			ptr->posy -= ptr->dirx * SPEED;
 	}
-	if (ptr->is_pressed_LEFT)
+	if (ptr->is_pressed_left)
 	{
-		ptr->dirX = ptr->dirX * cos(0.05) - ptr->dirY * sin(0.05);
-		ptr->dirY = ptr->dirX * sin(0.05) + ptr->dirY * cos(0.05);
-		ptr->planeX = ptr->planeX * cos(0.05) - ptr->planeY * sin(0.05);
-		ptr->planeY = ptr->planeX * sin(0.05) + ptr->planeY * cos(0.05);
+		ptr->dirx = ptr->dirx * cos(0.05) - ptr->dirY * sin(0.05);
+		ptr->dirY = ptr->dirx * sin(0.05) + ptr->dirY * cos(0.05);
+		ptr->planex = ptr->planex * cos(0.05) - ptr->planey * sin(0.05);
+		ptr->planey = ptr->planex * sin(0.05) + ptr->planey * cos(0.05);
 	}
-	if (ptr->is_pressed_RIGHT)
+	if (ptr->is_pressed_right)
 	{
-		ptr->dirX = ptr->dirX * cos(-0.05) - ptr->dirY * sin(-0.05);
-		ptr->dirY = ptr->dirX * sin(-0.05) + ptr->dirY * cos(-0.05);
-		ptr->planeX = ptr->planeX * cos(-0.05) - ptr->planeY * sin(-0.05);
-		ptr->planeY = ptr->planeX * sin(-0.05) + ptr->planeY * cos(-0.05);
+		ptr->dirx = ptr->dirx * cos(-0.05) - ptr->dirY * sin(-0.05);
+		ptr->dirY = ptr->dirx * sin(-0.05) + ptr->dirY * cos(-0.05);
+		ptr->planex = ptr->planex * cos(-0.05) - ptr->planey * sin(-0.05);
+		ptr->planey = ptr->planex * sin(-0.05) + ptr->planey * cos(-0.05);
 	}
 }
 
 
 void _3D_mouvements(t_map_data *ptr)
 {
-	if (ptr->is_pressed_W)
+	if (ptr->is_pressed_w)
 	{
-		if (ptr->map[(int)(ptr->posX + ptr->dirX * 0.5)][(int)(ptr->posY)] == '0')
-			ptr->posX += ptr->dirX * SPEED;
-		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY + ptr->dirY * 1)] == '0')
-			ptr->posY += ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posx + ptr->dirx * 0.5)][(int)(ptr->posy)] == '0')
+			ptr->posx += ptr->dirx * SPEED;
+		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy + ptr->dirY * 1)] == '0')
+			ptr->posy += ptr->dirY * SPEED;
 	}
-	if (ptr->is_pressed_S)
+	if (ptr->is_pressed_s)
 	{
-		if (ptr->map[(int)(ptr->posX - ptr->dirX * 0.5)][(int)(ptr->posY)] == '0')
-			ptr->posX -= ptr->dirX * SPEED;
-		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY - ptr->dirY * 1)] == '0')
-			ptr->posY -= ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posx - ptr->dirx * 0.5)][(int)(ptr->posy)] == '0')
+			ptr->posx -= ptr->dirx * SPEED;
+		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy - ptr->dirY * 1)] == '0')
+			ptr->posy -= ptr->dirY * SPEED;
 	}
-	if (ptr->is_pressed_A)
+	if (ptr->is_pressed_a)
 	{
-		if (ptr->map[(int)(ptr->posX - ptr->dirY * 0.5)][(int)(ptr->posY)] == '0')
-			ptr->posX -= ptr->dirY * SPEED;
-		if (ptr->map[(int)(ptr->posX)][(int)(ptr->posY + ptr->dirX * 1)] == '0')
-			ptr->posY += ptr->dirX * SPEED;
+		if (ptr->map[(int)(ptr->posx - ptr->dirY * 0.5)][(int)(ptr->posy)] == '0')
+			ptr->posx -= ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy + ptr->dirx * 1)] == '0')
+			ptr->posy += ptr->dirx * SPEED;
 	}
 	_3D_mouvemenst_sides(ptr);
 }
@@ -194,10 +194,10 @@ void init_textures(t_map_data *scrape)
 	if (tex_ptr == NULL)
 		return;
 	scrape->tex = tex_ptr;
-	load_texture(scrape, scrape->NO, &scrape->tex[0]);
-	load_texture(scrape, scrape->SO, &scrape->tex[1]);
-	load_texture(scrape, scrape->WE, &scrape->tex[2]);
-	load_texture(scrape, scrape->EA, &scrape->tex[3]);
+	load_texture(scrape, scrape->no, &scrape->tex[0]);
+	load_texture(scrape, scrape->so, &scrape->tex[1]);
+	load_texture(scrape, scrape->we, &scrape->tex[2]);
+	load_texture(scrape, scrape->ea, &scrape->tex[3]);
 
 	load_texture(scrape,"textures/door.xpm", &scrape->tex[4]);
 	load_texture(scrape,"textures/wall_frame/1.xpm", &scrape->tex[5]);

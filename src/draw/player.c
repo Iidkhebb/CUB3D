@@ -2,48 +2,48 @@
 
 void set_player_first_view(t_map_data *ptr)
 {
-    if (ptr->P_view == 'N')
+    if (ptr->p_view == 'N')
     {
-        ptr->dirX = -1;
+        ptr->dirx = -1;
         ptr->dirY = 0;
-        ptr->planeX = 0;
-        ptr->planeY = 0.66;
+        ptr->planex = 0;
+        ptr->planey = 0.66;
     }
-    else if (ptr->P_view == 'S')
+    else if (ptr->p_view == 'S')
     {
-        ptr->dirX = 1;
+        ptr->dirx = 1;
         ptr->dirY = 0;
-        ptr->planeX = 0;
-        ptr->planeY = -0.66;
+        ptr->planex = 0;
+        ptr->planey = -0.66;
     }
-    else if (ptr->P_view == 'E')
+    else if (ptr->p_view == 'E')
     {
-        ptr->dirX = 0;
+        ptr->dirx = 0;
         ptr->dirY = 1;
-        ptr->planeX = 0.66;
-        ptr->planeY = 0;
+        ptr->planex = 0.66;
+        ptr->planey = 0;
     }
-    else if (ptr->P_view == 'W')
+    else if (ptr->p_view == 'W')
     {
-        ptr->dirX = 0;
+        ptr->dirx = 0;
         ptr->dirY = -1;
-        ptr->planeX = -0.66;
-        ptr->planeY = 0;
+        ptr->planex = -0.66;
+        ptr->planey = 0;
     }
 }
 
 void init_player(t_map_data *ptr)
 {
     set_player_first_view(ptr);
-    ptr->posY = ptr->p_y;
-    ptr->posX = ptr->p_x;
+    ptr->posy = ptr->p_y;
+    ptr->posx = ptr->p_x;
     ptr->is_open = 0;
-    ptr->is_pressed_W = 0;
-    ptr->is_pressed_S = 0;
-    ptr->is_pressed_A = 0;
-    ptr->is_pressed_D = 0;
-    ptr->is_pressed_LEFT = 0;
-    ptr->is_pressed_RIGHT = 0;
+    ptr->is_pressed_w = 0;
+    ptr->is_pressed_s = 0;
+    ptr->is_pressed_a = 0;
+    ptr->is_pressed_d = 0;
+    ptr->is_pressed_left = 0;
+    ptr->is_pressed_right = 0;
      ptr->save_door_x = 0;
     ptr->save_door_y = 0;
 
@@ -67,7 +67,7 @@ void get_player_pos(t_map_data *ptr)
                 ptr->p_y = j;
                 ptr->p_x_mini = i;
                 ptr->p_y_mini = j;
-                ptr->P_view = ptr->map[i][j]; 
+                ptr->p_view = ptr->map[i][j]; 
             }
             j++;
         }

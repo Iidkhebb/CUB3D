@@ -28,22 +28,22 @@ int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     s = *scrape;
     if (!ft_strcmp( "NO ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
-        s->NO = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+        s->no = check_open(garbage(junk_list, ft_strtrim(&line[3], \
             WHITE_SPACES)), line, scrape);
     }
     else if (!ft_strcmp("SO ", garbage(junk_list, ft_substr(line, 0, 3))))
     {
-        s->SO = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+        s->so = check_open(garbage(junk_list, ft_strtrim(&line[3], \
             WHITE_SPACES)), line, scrape);
     }
     else if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
-        s->WE = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+        s->we = check_open(garbage(junk_list, ft_strtrim(&line[3], \
             WHITE_SPACES)), line, scrape);
     }
     else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
-        s->EA = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+        s->ea = check_open(garbage(junk_list, ft_strtrim(&line[3], \
             WHITE_SPACES)), line, scrape);
     }
     return (1);
@@ -107,18 +107,18 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
         RGB = process_RGB_data(garbage(junk_list , \
             ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, \
                 ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
-        s->C[0] = RGB[0];
-        s->C[1] = RGB[1];
-        s->C[2] = RGB[2];
+        s->c[0] = RGB[0];
+        s->c[1] = RGB[1];
+        s->c[2] = RGB[2];
     }
     else if (!ft_strcmp("F ", garbage(junk_list, ft_substr(line, 0, 2))))
     {
         RGB = process_RGB_data(garbage(junk_list , \
             ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, \
                 ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
-        s->F[0] = RGB[0];
-        s->F[1] = RGB[1];
-        s->F[2] = RGB[2];
+        s->f[0] = RGB[0];
+        s->f[1] = RGB[1];
+        s->f[2] = RGB[2];
     }
     return 1;
 }
@@ -198,6 +198,6 @@ t_map_data *scraper(int fd, char **raw_map)
     }
     list_free(&junk_list);
     scrape->map = convert_map(raw_map);
-    scrape->map_MINI = convert_map(raw_map);
+    scrape->map_mini = convert_map(raw_map);
     return (scrape);
 }

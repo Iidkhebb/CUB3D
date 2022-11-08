@@ -54,22 +54,22 @@
 // STRUCTS
 typedef struct s_map_data
 {
-    char *NO;
-    char *SO;
-    char *WE;
-    char *EA;
+    char *no;
+    char *so;
+    char *we;
+    char *ea;
 
-    int C[3];
-    int F[3];
+    int c[3];
+    int f[3];
 
     char **map;
-    char **map_MINI;
+    char **map_mini;
     // structs
     struct s_maplines *data;
     struct s_mlx_img *img;
     struct s_textures *tex;
-    struct s_mlx_img *door; // <<
-    bool door_open; // <<
+    struct s_mlx_img *door;
+    bool door_open;
 
     
     // Player
@@ -80,41 +80,41 @@ typedef struct s_map_data
     double p_y;
     int p_x_mini;
     int p_y_mini;
-    char P_view;
+    char p_view;
     // Ray
-    double posX;
-    double posY;
+    double posx;
+    double posy;
 
-    double dirX;
+    double dirx;
     double dirY;
 
-    double planeX;
-    double planeY;
+    double planex;
+    double planey;
 
-    double cameraX;
-    double rayDirX;
-    double rayDirY;
+    double camerax;
+    double raydirx;
+    double raydiry;
 
-    int mapX;
-    int mapY;
+    int mapx;
+    int mapy;
 
-    double deltaDistX;
-    double deltaDistY;
-    double sideDistX;
-    double sideDistY;
-    double perpWallDist;
-    int stepX;
-    int stepY;
-    int lineHeight;
-    int drawStart;
-    int drawEnd;
-    int is_pressed_W;
-    int is_pressed_S;
-    int is_pressed_A;
-    int is_pressed_D;
+    double deltadistx;
+    double deltadisty;
+    double sidedistx;
+    double sidedisty;
+    double perpwalldist;
+    int stepx;
+    int stepy;
+    int lineheight;
+    int drawstart;
+    int drawend;
+    int is_pressed_w;
+    int is_pressed_s;
+    int is_pressed_a;
+    int is_pressed_d;
 
-    int is_pressed_LEFT;
-    int is_pressed_RIGHT;
+    int is_pressed_left;
+    int is_pressed_right;
 
     // textures
 

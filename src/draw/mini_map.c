@@ -22,20 +22,20 @@ void mini_map(t_map_data *ptr)
 	
 	i = 0;
 	j = 0;
-	while (ptr->map_MINI[i])
+	while (ptr->map_mini[i])
 	{
 		j = 0;
-		while (ptr->map_MINI[i][j])
+		while (ptr->map_mini[i][j])
 		{
-			if (ft_strchr(PLAYER_POS, ptr->map_MINI[i][j]) || ptr->map_MINI[i][j] == '0')
+			if (ft_strchr(PLAYER_POS, ptr->map_mini[i][j]) || ptr->map_mini[i][j] == '0')
 				draw_something(ptr, i, j,create_trgb(0, 100, 255, 255));
-			else if (ptr->map_MINI[i][j] == '1')
+			else if (ptr->map_mini[i][j] == '1')
 				draw_something(ptr, i, j, create_trgb(0, 7, 9, 9));
-			else if (ptr->map_MINI[i][j] == 'D')
+			else if (ptr->map_mini[i][j] == 'D')
 				draw_something(ptr, i, j, create_trgb(0, 255, 255, 255));
 			j++;
 		}
 		i++;
 	}
-	draw_something(ptr, ptr->posX, ptr->posY, create_trgb(0, 255, 0, 0));
+	draw_something(ptr, ptr->posx, ptr->posy, create_trgb(0, 255, 0, 0));
 }

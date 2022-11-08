@@ -21,11 +21,11 @@ void check_frames(t_map_data *ptr, int *i, int *frames)
 
 void check_screen_H(t_map_data *ptr, double *step)
 {
-    *step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineHeight;
-    if (ptr->lineHeight < HEIGHT)
+    *step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineheight;
+    if (ptr->lineheight < HEIGHT)
         ptr->tex_pos = 0;
     else 
-        ptr->tex_pos = ((ptr->lineHeight / 2) - (HEIGHT / 2)) * *step;
+        ptr->tex_pos = ((ptr->lineheight / 2) - (HEIGHT / 2)) * *step;
 }
 
 void draw_screen(t_map_data *ptr, int side, int x) 
@@ -42,9 +42,9 @@ void draw_screen(t_map_data *ptr, int side, int x)
     check_screen_H(ptr, &step);
     while (y++ < HEIGHT)
     {
-        if (y < ptr->drawStart)
-            my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->C[0],ptr->C[1],ptr->C[2]));
-        else if (y >= ptr->drawStart && y <= ptr->drawEnd)
+        if (y < ptr->drawstart)
+            my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->c[0],ptr->c[1],ptr->c[2]));
+        else if (y >= ptr->drawstart && y <= ptr->drawend)
         {
             tex_y = (int)ptr->tex_pos % ptr->tex[ptr->tex_index].img_height;
             check_frames(ptr, &i, &frames);
@@ -52,45 +52,45 @@ void draw_screen(t_map_data *ptr, int side, int x)
             ptr->tex_pos += step;
         }
         else
-            my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->F[0],ptr->F[1],ptr->F[2]));
+            my_mlx_pixel_put(ptr, x, y, create_trgb(0, ptr->f[0],ptr->f[1],ptr->f[2]));
     }
 }
 
 
-void validatd_DIR(t_map_data *ptr, int mapX,int mapY)
+void validatd_DIR(t_map_data *ptr, int mapx,int mapy)
 {
-    if (ptr->rayDirX < 0)
+    if (ptr->raydirx < 0)
     {
-        ptr->stepX = -1;
-        ptr->sideDistX = (ptr->posX - mapX) * ptr->deltaDistX;
+        ptr->stepx = -1;
+        ptr->sidedistx = (ptr->posx - mapx) * ptr->deltadistx;
     }
     else
     {
-        ptr->stepX = 1;
-        ptr->sideDistX = (mapX + 1.0 - ptr->posX) * ptr->deltaDistX;
+        ptr->stepx = 1;
+        ptr->sidedistx = (mapx + 1.0 - ptr->posx) * ptr->deltadistx;
     }
 
-    if (ptr->rayDirY < 0)
+    if (ptr->raydiry < 0)
     {
-        ptr->stepY = -1;
-        ptr->sideDistY = (ptr->posY - mapY) * ptr->deltaDistY;
+        ptr->stepy = -1;
+        ptr->sidedisty = (ptr->posy - mapy) * ptr->deltadisty;
     }
     else
     {
-        ptr->stepY = 1;
-        ptr->sideDistY = (mapY + 1.0 - ptr->posY) * ptr->deltaDistY;
+        ptr->stepy = 1;
+        ptr->sidedisty = (mapy + 1.0 - ptr->posy) * ptr->deltadisty;
     }
 }
 
-void ray_casting_extra(t_map_data *ptr, int mapX, int mapY)
+void ray_casting_extra(t_map_data *ptr, int mapx, int mapy)
 {
-    if(ptr->map[mapX][mapY] == 'D')
+    if(ptr->map[mapx][mapy] == 'D')
     {
         ptr->door_open = true;
         if (ptr->is_open == 1)
-            open_door(ptr, mapX, mapY);
-        ptr->save_door_x = mapX;
-        ptr->save_door_y = mapY;
+            open_door(ptr, mapx, mapy);
+        ptr->save_door_x = mapx;
+        ptr->save_door_y = mapy;
     }
     else if (ptr->is_open == 0)
     {
@@ -98,22 +98,22 @@ void ray_casting_extra(t_map_data *ptr, int mapX, int mapY)
     }
 }
 
-void ray_casting_extra_2(t_map_data *ptr, int *mapX, int *mapY, int x)
+void ray_casting_extra_2(t_map_data *ptr, int *mapx, int *mapy, int x)
 {
-    ptr->cameraX = (2 * x) / (double)WIDTH - 1;
-    ptr->rayDirX = ptr->dirX + ptr->planeX * ptr->cameraX;
-    ptr->rayDirY = ptr->dirY + ptr->planeY * ptr->cameraX;
-    *mapX = (int)ptr->posX;
-    *mapY = (int)ptr->posY;
-    ptr->deltaDistX = fabs(1 / ptr->rayDirX);
-    ptr->deltaDistY = fabs(1 / ptr->rayDirY);
+    ptr->camerax = (2 * x) / (double)WIDTH - 1;
+    ptr->raydirx = ptr->dirx + ptr->planex * ptr->camerax;
+    ptr->raydiry = ptr->dirY + ptr->planey * ptr->camerax;
+    *mapx = (int)ptr->posx;
+    *mapy = (int)ptr->posy;
+    ptr->deltadistx = fabs(1 / ptr->raydirx);
+    ptr->deltadisty = fabs(1 / ptr->raydiry);
 }
 
 void ray_casting(t_map_data *ptr)
 {
     int x;
-    int mapX;
-    int mapY;
+    int mapx;
+    int mapy;
     int hit;
     int side;
 
@@ -121,16 +121,16 @@ void ray_casting(t_map_data *ptr)
     side = 0;
     while (x++ < WIDTH)
     {
-        ray_casting_extra_2(ptr, &mapX, &mapY, x);
+        ray_casting_extra_2(ptr, &mapx, &mapy, x);
         hit = 0;
-        validatd_DIR(ptr, mapX,mapY);
+        validatd_DIR(ptr, mapx,mapy);
         while (hit == 0)
         {
             ptr->door_open = false;
-            check_wall_hit(ptr, &mapY, &mapX, &side);
-            if (ptr->map[mapX][mapY] != '0') 
+            check_wall_hit(ptr, &mapy, &mapx, &side);
+            if (ptr->map[mapx][mapy] != '0') 
                 hit = 1;
-            ray_casting_extra(ptr, mapX, mapY);
+            ray_casting_extra(ptr, mapx, mapy);
         }
         set_draw_start_end(ptr, side);
         set_which_textures(ptr, side);
