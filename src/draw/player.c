@@ -38,10 +38,6 @@ void init_player(t_map_data *ptr)
     ptr->posY = ptr->p_y;
     ptr->posX = ptr->p_x;
     ptr->is_open = 0;
-    // ptr->dirX = -1;
-    // ptr->dirY = 0;
-    // ptr->planeX = 0;
-    // ptr->planeY = 0.66;
     ptr->is_pressed_W = 0;
     ptr->is_pressed_S = 0;
     ptr->is_pressed_A = 0;

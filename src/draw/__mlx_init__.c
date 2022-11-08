@@ -200,18 +200,6 @@ void init_textures(t_map_data *scrape)
 	load_texture(scrape, scrape->EA, &scrape->tex[3]);
 
 	load_texture(scrape,"textures/door.xpm", &scrape->tex[4]);
-	//
-	// load_texture(scrape,"textures/fire/00.xpm", &scrape->tex[5]);
-	// load_texture(scrape,"textures/fire/01.xpm", &scrape->tex[6]);
-	// load_texture(scrape,"textures/fire/02.xpm", &scrape->tex[7]);
-	// load_texture(scrape,"textures/fire/03.xpm", &scrape->tex[8]);
-	// load_texture(scrape,"textures/fire/04.xpm", &scrape->tex[9]);
-	// load_texture(scrape,"textures/fire/05.xpm", &scrape->tex[10]);
-	// load_texture(scrape,"textures/fire/06.xpm", &scrape->tex[11]);
-	// load_texture(scrape,"textures/fire/07.xpm", &scrape->tex[12]);
-	// load_texture(scrape,"textures/fire/08.xpm", &scrape->tex[13]);
-	// load_texture(scrape,"textures/fire/09.xpm", &scrape->tex[14]);
-
 	load_texture(scrape,"textures/wall_frame/1.xpm", &scrape->tex[5]);
 	load_texture(scrape,"textures/wall_frame/2.xpm", &scrape->tex[6]);
 	load_texture(scrape,"textures/wall_frame/3.xpm", &scrape->tex[7]);
@@ -219,7 +207,6 @@ void init_textures(t_map_data *scrape)
 	load_texture(scrape,"textures/wall_frame/5.xpm", &scrape->tex[9]);
 	load_texture(scrape,"textures/wall_frame/6.xpm", &scrape->tex[10]);
 	load_texture(scrape,"textures/wall_frame/7.xpm", &scrape->tex[11]);
-
 }
 
 
