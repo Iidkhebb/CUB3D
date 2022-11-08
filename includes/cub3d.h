@@ -6,7 +6,7 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 22:21:39 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:34:40 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:45:30 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ typedef struct s_garbage
 
 // PROTOTYPES
 int				basic_init(int ac, char *av[]);
-char			**check_map(int fd);
 int				check_empty_line(char *line);
 t_map_data		*scraper(int fd, char **raw_map);
 
@@ -238,7 +237,7 @@ void			draw_screen(t_map_data *ptr, int side, int x);
 void			ray_casting_extra(t_map_data *ptr, int mapx, int mapy);
 void			validatd_dir(t_map_data *ptr, int mapx, int mapy);
 char			**init_tab(t_maplines **maplines, t_garbage **junk_list);
-char			**check_map(int fd);
+char			**check_map(int fd, t_maplines **maplines);
 int				check_endline(int is_done, char *line, \
 				t_garbage **junk_list, t_maplines **maplines);
 void			iter_extra(char *line, t_garbage **junk_list, \

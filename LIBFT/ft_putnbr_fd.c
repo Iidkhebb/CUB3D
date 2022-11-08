@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iidkhebb <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 15:57:05 by iidkhebb          #+#    #+#             */
-/*   Updated: 2021/11/07 15:58:46 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:47:36 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	ft_putnbr(int nb, int fd)
 		nb = -nb;
 		data('-', fd);
 	}
-	if (nb < 10 && nb >= 0 )
+	if (nb < 10 && nb >= 0)
 	{
 		data(nb + 48, fd);
 	}	
