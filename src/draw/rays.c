@@ -6,27 +6,29 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 21:53:05 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:25:17 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:37:17 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	check_frames(t_map_data *ptr, int *i, int *frames)
+void	check_frames(t_map_data *ptr, int *frames)
 {
+	static int	i = 5;
+
 	if (ptr->tex_index == 5)
 	{
 		*frames = *frames + 1;
-		ptr->tex_index = *i;
+		ptr->tex_index = i;
 		if (*frames < 6000)
 		{
-			if (*i == 10)
-				*i = 5;
+			if (i == 10)
+				i = 5;
 		}
 		else
 		{
 			*frames = 0;
-			*i = *i + 1;
+			i = i + 1;
 		}
 	}
 }
@@ -47,8 +49,7 @@ void	draw_screen(t_map_data *ptr, int side, int x)
 	double		step;
 	int			y;
 	static int	frames = 0;
-	static int	i = 5;
-	
+
 	y = -1;
 	tex_x = calc_tex_x(ptr, side);
 	check_screen_h(ptr, &step);
@@ -59,7 +60,7 @@ void	draw_screen(t_map_data *ptr, int side, int x)
 		else if (y >= ptr->drawstart && y <= ptr->drawend)
 		{
 			tex_y = (int)ptr->tex_pos % ptr->tex[ptr->tex_index].img_height;
-			check_frames(ptr, &i, &frames);
+			check_frames(ptr, &frames);
 			mmpp(ptr, x, y, get_color(&ptr->tex[ptr->tex_index], tex_x, tex_y));
 			ptr->tex_pos += step;
 		}

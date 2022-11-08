@@ -6,7 +6,7 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 22:14:47 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:15:01 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:38:15 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_maplines	*ft_lstnew_map(char *line)
 	new = (t_maplines *)malloc(sizeof(t_maplines));
 	if (!(new))
 		return (0);
-	
 	new->line = ft_strdup(line);
 	new->next = NULL;
 	return (new);
