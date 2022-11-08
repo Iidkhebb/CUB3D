@@ -1,5 +1,6 @@
 #include "../../includes/cub3d.h"
 
+
 int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
 {
     t_map_data *s;
@@ -17,20 +18,14 @@ int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
         s->so = check_open(garbage(junk_list, ft_strtrim(&line[3], \
             WHITE_SPACES)), line);
     }
-    else if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3))))
+    else
     {
-        s->we = check_open(garbage(junk_list, ft_strtrim(&line[3], \
-            WHITE_SPACES)), line);
-    }
-    else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3))))
-    {
-        s->ea = check_open(garbage(junk_list, ft_strtrim(&line[3], \
-            WHITE_SPACES)), line);
+        get_text_val_extra(line, &s, junk_list);
     }
     return (1);
 }
 
-int *process_RGB_data_extra(char **RGB)
+int *process_rgb_data_extra(char **RGB)
 {
     static int  out[3];
 
@@ -50,7 +45,7 @@ int *process_RGB_data_extra(char **RGB)
 }
 
 
-int *process_RGB_data(char *line, t_map_data **scrape)
+int *process_rgb_data(char *line, t_map_data **scrape)
 {
     char **RGB;
     int len;
@@ -71,10 +66,10 @@ int *process_RGB_data(char *line, t_map_data **scrape)
         ft_putstr_fd(ERR_RGB_VAL, 2);
         exit(FAILED);
     }
-    return process_RGB_data_extra(RGB);
+    return process_rgb_data_extra(RGB);
 }
 
-int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
+int get_rgb_val(char *line, t_map_data **scrape, t_garbage **junk_list)
 {
     int *RGB;
     t_map_data *s;
@@ -84,7 +79,7 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     s = *scrape;
     if (!ft_strcmp("C ", garbage(junk_list, ft_substr(line, 0, 2))))
     {
-        RGB = process_RGB_data(garbage(junk_list , \
+        RGB = process_rgb_data(garbage(junk_list , \
             ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, \
                 ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
         s->c[0] = RGB[0];
@@ -93,7 +88,7 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     }
     else if (!ft_strcmp("F ", garbage(junk_list, ft_substr(line, 0, 2))))
     {
-        RGB = process_RGB_data(garbage(junk_list , \
+        RGB = process_rgb_data(garbage(junk_list , \
             ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, \
                 ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
         s->f[0] = RGB[0];
@@ -124,7 +119,7 @@ t_map_data *scraper(int fd, char **raw_map)
         line = ft_strtrim(line, WHITE_SPACES);
         garbage(&junk_list, line);
         get_textures_val(line, &scrape, &junk_list);
-        get_RGB_val(line, &scrape, &junk_list);
+        get_rgb_val(line, &scrape, &junk_list);
     }
     list_free(&junk_list);
     scrape->map = convert_map(raw_map);

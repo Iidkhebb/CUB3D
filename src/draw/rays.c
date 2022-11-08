@@ -19,7 +19,7 @@ void check_frames(t_map_data *ptr, int *i, int *frames)
     }
 }
 
-void check_screen_H(t_map_data *ptr, double *step)
+void check_screen_h(t_map_data *ptr, double *step)
 {
     *step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineheight;
     if (ptr->lineheight < HEIGHT)
@@ -39,7 +39,7 @@ void draw_screen(t_map_data *ptr, int side, int x)
     
     y = -1;
     tex_x = calc_tex_x(ptr, side);
-    check_screen_H(ptr, &step);
+    check_screen_h(ptr, &step);
     while (y++ < HEIGHT)
     {
         if (y < ptr->drawstart)
@@ -57,7 +57,7 @@ void draw_screen(t_map_data *ptr, int side, int x)
 }
 
 
-void validatd_DIR(t_map_data *ptr, int mapx,int mapy)
+void validatd_dir(t_map_data *ptr, int mapx,int mapy)
 {
     if (ptr->raydirx < 0)
     {

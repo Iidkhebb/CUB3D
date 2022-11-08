@@ -1,8 +1,7 @@
 #include "../../includes/cub3d.h"
 
-int get_MAP_val(t_maplines **scrape, char *line)
+int get_map_val(t_maplines **scrape, char *line)
 {
-
     if (line &&  ((line[0] != '1') || (line[ft_strlen(line) - 2]) != '1'))
     {
         return 1;
@@ -44,8 +43,6 @@ int get_greatest_line_len(char **raw_map)
     }
     return max;
 }
-
-
 
 int double_array_len(char **array)
 {

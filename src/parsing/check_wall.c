@@ -1,9 +1,6 @@
 #include "../../includes/cub3d.h"
 
-
-
-
-int deep_check_walls_1(char **tab, int i, int j)
+int deep_check_walls_one(char **tab, int i, int j)
 {
     if (deepcheck_extra(tab, i, j) == 0)
         return (0);
@@ -66,7 +63,7 @@ int check_inner_walls(char **tab, int i)
     free(trim); 
     while (tab[i][j] != '\0' && tab[i][j] != '\n')
     {
-        if (!deep_check_walls_1(tab, i, j))
+        if (!deep_check_walls_one(tab, i, j))
             return (0);
         j++;
     }

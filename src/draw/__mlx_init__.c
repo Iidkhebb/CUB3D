@@ -2,7 +2,7 @@
 
 int	render_next_frame(t_map_data *ptr)
 {
-	_3D_mouvements(ptr);
+	_d_mouvements(ptr);
 	ray_casting(ptr);
 	mini_map(ptr);
 	mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img,0,0);
@@ -52,6 +52,7 @@ void window_init(t_map_data *scrape)
 	scrape->img = ptr;
 	ptr->mouse_x = 0;
     ptr->mouse_y = 0;
+	
 	ptr->mlx = mlx_init();
 	ptr->mlx_win = mlx_new_window(ptr->mlx, WIDTH, HEIGHT, "cub3D");
 	ptr->img = mlx_new_image(ptr->mlx, WIDTH, HEIGHT);

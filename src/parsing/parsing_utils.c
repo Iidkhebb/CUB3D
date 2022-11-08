@@ -1,7 +1,5 @@
 #include "../../includes/cub3d.h"
 
-
-
 int check_empty_line(char *line)
 {
     int i;

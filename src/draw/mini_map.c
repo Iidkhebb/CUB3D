@@ -40,7 +40,7 @@ void mini_map(t_map_data *ptr)
 	draw_something(ptr, ptr->posx, ptr->posy, create_trgb(0, 255, 0, 0));
 }
 
-void ray_casting_extra_2(t_map_data *ptr, int *mapx, int *mapy, int x)
+void ray_casting_extra_two(t_map_data *ptr, int *mapx, int *mapy, int x)
 {
     ptr->camerax = (2 * x) / (double)WIDTH - 1;
     ptr->raydirx = ptr->dirx + ptr->planex * ptr->camerax;
@@ -63,9 +63,9 @@ void ray_casting(t_map_data *ptr)
     side = 0;
     while (x++ < WIDTH)
     {
-        ray_casting_extra_2(ptr, &mapx, &mapy, x);
+        ray_casting_extra_two(ptr, &mapx, &mapy, x);
         hit = 0;
-        validatd_DIR(ptr, mapx,mapy);
+        validatd_dir(ptr, mapx,mapy);
         while (hit == 0)
         {
             ptr->door_open = false;

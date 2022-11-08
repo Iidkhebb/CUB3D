@@ -52,7 +52,7 @@ void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void _3D_mouvemenst_sides(t_map_data *ptr)
+void _d_mouvemenst_sides(t_map_data *ptr)
 {
 	if (ptr->is_pressed_d)
 	{
@@ -78,7 +78,7 @@ void _3D_mouvemenst_sides(t_map_data *ptr)
 }
 
 
-void _3D_mouvements(t_map_data *ptr)
+void _d_mouvements(t_map_data *ptr)
 {
 	if (ptr->is_pressed_w)
 	{
@@ -101,5 +101,5 @@ void _3D_mouvements(t_map_data *ptr)
 		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy + ptr->dirx * 1)] == '0')
 			ptr->posy += ptr->dirx * SPEED;
 	}
-	_3D_mouvemenst_sides(ptr);
+	_d_mouvemenst_sides(ptr);
 }

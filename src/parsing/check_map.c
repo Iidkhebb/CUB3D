@@ -1,5 +1,19 @@
 #include "../../includes/cub3d.h"
 
+void get_text_val_extra(char *line, t_map_data **s, t_garbage **junk_list)
+{
+    if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3))))
+    {
+        (*s)->we = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+            WHITE_SPACES)), line);
+    }
+    else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3))))
+    {
+        (*s)->ea = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+            WHITE_SPACES)), line);
+    }
+}
+
 char **init_tab(t_maplines **maplines, t_garbage **junk_list)
 {
     char **tab;
@@ -11,16 +25,14 @@ char **init_tab(t_maplines **maplines, t_garbage **junk_list)
 char **check_map(int fd)
 {
     t_garbage		*junk_list;
-    char *line;
-    int map_level;
-    static char *prv;
-    int is_done;
-    t_maplines *maplines;
+    char            *line;
+    int             map_level;
+    static char     *prv = NULL;
+    int             is_done;
+    t_maplines      *maplines;
 
     maplines = NULL;
     is_done = 0;
-    map_level = 0;
-    prv = NULL;
     junk_list = NULL;
     line = "";
     while(line)
