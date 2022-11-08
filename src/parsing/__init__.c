@@ -14,7 +14,7 @@ void final_check( t_maplines *maplines, char **tab, t_garbage *junk_list)
 
 int check_endline(int is_done, char *line, t_garbage **junk_list, t_maplines **maplines)
 {
-    if (is_done && !check_empty_line(line, junk_list))
+    if (is_done && !check_empty_line(line))
         return (ft_putstr_fd(ERR_MAPS_ENDLINE, 2),list_free(junk_list), free_list(*maplines),exit(1), 0);
     if (line)
         ft_lstadd_back_map(maplines, ft_lstnew_map(line));
@@ -38,9 +38,9 @@ void check_text_key(t_garbage **junk_list, int map_level)
 void iter_extra(char *line,  t_garbage **junk_list, int *map_level, int is_done)
 {
     garbage(junk_list, line);
-    if ((line && check_empty_line(line, junk_list) \
+    if ((line && check_empty_line(line) \
         && (*map_level != 454)) \
-            || (is_done && check_empty_line(line, junk_list)))
+            || (is_done && check_empty_line(line)))
     {
         return ;
     }
@@ -71,11 +71,12 @@ char **check_map(int fd)
     map_level = 0;
     prv = NULL;
     junk_list = NULL;
+    line = "";
     while(line)
     {
         line = get_next_line(fd);
         iter_extra(line, &junk_list, &map_level, is_done);
-        if ((prv && check_empty_line(line, &junk_list)) || (prv && !line))
+        if ((prv && check_empty_line(line)) || (prv && !line))
             is_done = 1;
         else if ((map_level == 454 || map_level == -1))
         {

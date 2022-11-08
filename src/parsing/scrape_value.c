@@ -1,6 +1,6 @@
 #include "../../includes/cub3d.h"
 
-char *check_open(char *path, char *line, t_map_data **scrape)
+char *check_open(char *path, char *line)
 {
     int fd;
     char *new_path;
@@ -29,22 +29,22 @@ int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     if (!ft_strcmp( "NO ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
         s->no = check_open(garbage(junk_list, ft_strtrim(&line[3], \
-            WHITE_SPACES)), line, scrape);
+            WHITE_SPACES)), line);
     }
     else if (!ft_strcmp("SO ", garbage(junk_list, ft_substr(line, 0, 3))))
     {
         s->so = check_open(garbage(junk_list, ft_strtrim(&line[3], \
-            WHITE_SPACES)), line, scrape);
+            WHITE_SPACES)), line);
     }
     else if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
         s->we = check_open(garbage(junk_list, ft_strtrim(&line[3], \
-            WHITE_SPACES)), line, scrape);
+            WHITE_SPACES)), line);
     }
     else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
         s->ea = check_open(garbage(junk_list, ft_strtrim(&line[3], \
-            WHITE_SPACES)), line, scrape);
+            WHITE_SPACES)), line);
     }
     return (1);
 }
@@ -72,7 +72,6 @@ int *process_RGB_data_extra(char **RGB)
 int *process_RGB_data(char *line, t_map_data **scrape)
 {
     char **RGB;
-    static int  out[3];
     int len;
 
     if (count_char(line, ',') != 2)
@@ -182,6 +181,7 @@ t_map_data *scraper(int fd, char **raw_map)
     t_map_data  *scrape;
 
     junk_list = NULL;
+    line = "";
     scrape = (t_map_data *)malloc(sizeof(t_map_data));
     if (!scrape)
         return 0;
@@ -189,7 +189,7 @@ t_map_data *scraper(int fd, char **raw_map)
     {
         line = get_next_line(fd);
         garbage(&junk_list, line);
-        if ((line && check_empty_line(line, &junk_list)))
+        if ((line && check_empty_line(line)))
             continue;
         line = ft_strtrim(line, WHITE_SPACES);
         garbage(&junk_list, line);

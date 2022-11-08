@@ -179,7 +179,7 @@ typedef struct s_garbage
 // PROTOTYPES
 int basic_init(int ac, char *av[]);
 char **check_map(int fd);
-int check_empty_line(char *line, t_garbage **junk);
+int check_empty_line(char *line);
 t_map_data *scraper(int fd, char **raw_map);
 
 
@@ -216,7 +216,7 @@ char *trim_whitescapes(char *line);
 char **list_to_tab(t_maplines *list);
 int free_tab(char **tab);
 void free_list(t_maplines *list);
-char *check_open(char *path, char *line, t_map_data **scrape);
+char *check_open(char *path, char *line);
 int range(int n);
 int double_array_len(char **array);
 int count_char(char *line, char c);

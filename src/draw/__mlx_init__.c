@@ -157,21 +157,12 @@ void _3D_mouvements(t_map_data *ptr)
 	_3D_mouvemenst_sides(ptr);
 }
 
-void render_torch(t_map_data *ptr)
-{
-	int y;
-	int x;
-	static int i = 5;
- 	mlx_put_image_to_window(&ptr->img->mlx, ptr->img->mlx_win,ptr->tex[i].img, WIDTH / 2, HEIGHT /ptr->tex[i].img_height);
-	i = (i + 1) % 10;
-}
 
 int	render_next_frame(t_map_data *ptr)
 {
 	_3D_mouvements(ptr);
 	ray_casting(ptr);
 	mini_map(ptr);
-	// render_torch(ptr);
 	mlx_put_image_to_window(ptr->img->mlx, ptr->img->mlx_win, ptr->img->img,0,0);
 	return (1);
 }

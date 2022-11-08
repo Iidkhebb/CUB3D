@@ -4,14 +4,14 @@ int deepcheck_extra(char **tab, int i, int j)
 {
     if((tab[i][j] == '0' && tab[i + 1][j] == ' ') || (tab[i][j] == '0' && tab[i - 1][j] == ' '))
         return (0);
-    if (ft_strlen(tab[i]) > ft_strlen(tab[i - 1]))
+    if ((int)ft_strlen(tab[i]) > (int)ft_strlen(tab[i - 1]))
     {
-        if (tab[i][j] == '0' && j > ft_strlen(tab[i - 1]))
+        if (tab[i][j] == '0' && j > (int)ft_strlen(tab[i - 1]))
             return (0);
     }
-    else if (ft_strlen(tab[i]) > ft_strlen(tab[i + 1]))
+    else if ((int)ft_strlen(tab[i]) > (int)ft_strlen(tab[i + 1]))
     {
-        if (tab[i][j] == '0' && j > ft_strlen(tab[i + 1]))
+        if (tab[i][j] == '0' && j > (int)ft_strlen(tab[i + 1]))
             return (0);
     }
     return (1);
@@ -93,7 +93,6 @@ int check_walls(char **tab)
     int i;
     int j;
     int p_count;
-    char *trim;
     int last;
 
     i = 0;
