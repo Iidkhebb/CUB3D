@@ -6,7 +6,7 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 21:57:52 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 21:58:30 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:25:17 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,28 @@ void	set_player_first_view(t_map_data *ptr)
 	if (ptr->p_view == 'N')
 	{
 		ptr->dirx = -1;
-		ptr->dirY = 0;
+		ptr->diry = 0;
 		ptr->planex = 0;
 		ptr->planey = 0.66;
 	}
 	else if (ptr->p_view == 'S')
 	{
 		ptr->dirx = 1;
-		ptr->dirY = 0;
+		ptr->diry = 0;
 		ptr->planex = 0;
 		ptr->planey = -0.66;
 	}
 	else if (ptr->p_view == 'E')
 	{
 		ptr->dirx = 0;
-		ptr->dirY = 1;
+		ptr->diry = 1;
 		ptr->planex = 0.66;
 		ptr->planey = 0;
 	}
 	else if (ptr->p_view == 'W')
 	{
 		ptr->dirx = 0;
-		ptr->dirY = -1;
+		ptr->diry = -1;
 		ptr->planex = -0.66;
 		ptr->planey = 0;
 	}

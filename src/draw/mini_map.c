@@ -6,7 +6,7 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 21:58:42 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:00:38 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:25:17 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ray_casting_extra_two(t_map_data *ptr, int *mapx, int *mapy, int x)
 {
 	ptr->camerax = (2 * x) / (double)WIDTH - 1;
 	ptr->raydirx = ptr->dirx + ptr->planex * ptr->camerax;
-	ptr->raydiry = ptr->dirY + ptr->planey * ptr->camerax;
+	ptr->raydiry = ptr->diry + ptr->planey * ptr->camerax;
 	*mapx = (int)ptr->posx;
 	*mapy = (int)ptr->posy;
 	ptr->deltadistx = fabs(1 / ptr->raydirx);

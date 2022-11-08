@@ -6,7 +6,7 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 22:00:47 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:02:20 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:25:17 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,23 @@ void	_d_mouvemenst_sides(t_map_data *ptr)
 {
 	if (ptr->is_pressed_d)
 	{
-		if (ptr->map[(int)(ptr->posx + ptr->dirY * 0.5)] \
+		if (ptr->map[(int)(ptr->posx + ptr->diry * 0.5)] \
 			[(int)(ptr->posy)] == '0')
-			ptr->posx += ptr->dirY * SPEED;
+			ptr->posx += ptr->diry * SPEED;
 		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy - ptr->dirx * 1)] == '0')
 			ptr->posy -= ptr->dirx * SPEED;
 	}
 	if (ptr->is_pressed_left)
 	{
-		ptr->dirx = ptr->dirx * cos(0.05) - ptr->dirY * sin(0.05);
-		ptr->dirY = ptr->dirx * sin(0.05) + ptr->dirY * cos(0.05);
+		ptr->dirx = ptr->dirx * cos(0.05) - ptr->diry * sin(0.05);
+		ptr->diry = ptr->dirx * sin(0.05) + ptr->diry * cos(0.05);
 		ptr->planex = ptr->planex * cos(0.05) - ptr->planey * sin(0.05);
 		ptr->planey = ptr->planex * sin(0.05) + ptr->planey * cos(0.05);
 	}
 	if (ptr->is_pressed_right)
 	{
-		ptr->dirx = ptr->dirx * cos(-0.05) - ptr->dirY * sin(-0.05);
-		ptr->dirY = ptr->dirx * sin(-0.05) + ptr->dirY * cos(-0.05);
+		ptr->dirx = ptr->dirx * cos(-0.05) - ptr->diry * sin(-0.05);
+		ptr->diry = ptr->dirx * sin(-0.05) + ptr->diry * cos(-0.05);
 		ptr->planex = ptr->planex * cos(-0.05) - ptr->planey * sin(-0.05);
 		ptr->planey = ptr->planex * sin(-0.05) + ptr->planey * cos(-0.05);
 	}
@@ -98,22 +98,22 @@ void	_d_mouvements(t_map_data *ptr)
 		if (ptr->map[(int)(ptr->posx + ptr->dirx * 0.5)] \
 			[(int)(ptr->posy)] == '0')
 			ptr->posx += ptr->dirx * SPEED;
-		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy + ptr->dirY * 1)] == '0')
-			ptr->posy += ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy + ptr->diry * 1)] == '0')
+			ptr->posy += ptr->diry * SPEED;
 	}
 	if (ptr->is_pressed_s)
 	{
 		if (ptr->map[(int)(ptr->posx - ptr->dirx * 0.5)] \
 			[(int)(ptr->posy)] == '0')
 			ptr->posx -= ptr->dirx * SPEED;
-		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy - ptr->dirY * 1)] == '0')
-			ptr->posy -= ptr->dirY * SPEED;
+		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy - ptr->diry * 1)] == '0')
+			ptr->posy -= ptr->diry * SPEED;
 	}
 	if (ptr->is_pressed_a)
 	{
-		if (ptr->map[(int)(ptr->posx - ptr->dirY * 0.5)] \
+		if (ptr->map[(int)(ptr->posx - ptr->diry * 0.5)] \
 			[(int)(ptr->posy)] == '0')
-			ptr->posx -= ptr->dirY * SPEED;
+			ptr->posx -= ptr->diry * SPEED;
 		if (ptr->map[(int)(ptr->posx)][(int)(ptr->posy + ptr->dirx * 1)] == '0')
 			ptr->posy += ptr->dirx * SPEED;
 	}
