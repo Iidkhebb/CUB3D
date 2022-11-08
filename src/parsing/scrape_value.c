@@ -25,51 +25,49 @@ int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
 
     if (!line)
         return 1;
-
     s = *scrape;
-    if (!ft_strcmp( "NO ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
-        s->NO = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
-    else if (!ft_strcmp("SO ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
-        s->SO = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
-    else if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
-        s->WE = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
-    else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3) ) ) )
-        s->EA = check_open(garbage(junk_list, ft_strtrim(&line[3], WHITE_SPACES)), line, scrape);
-    return 1;
-}
-
-int range(int n)
-{
-    if (n >= 0 && n <= 255)
-        return 1;
-    return 0;
-}
-
-int double_array_len(char **array)
-{
-    int i;
-
-    i = 0;
-    while (array[i])
-        i++;
-    return i;
-}
-
-int count_char(char *line, char c)
-{
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (line[i])
+    if (!ft_strcmp( "NO ", garbage( junk_list, ft_substr(line, 0, 3))))
     {
-        if (line[i] == c)
-            count++;
-        i++;
+        s->NO = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+            WHITE_SPACES)), line, scrape);
     }
-    return count;
+    else if (!ft_strcmp("SO ", garbage(junk_list, ft_substr(line, 0, 3))))
+    {
+        s->SO = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+            WHITE_SPACES)), line, scrape);
+    }
+    else if (!ft_strcmp("WE ", garbage( junk_list, ft_substr(line, 0, 3))))
+    {
+        s->WE = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+            WHITE_SPACES)), line, scrape);
+    }
+    else if (!ft_strcmp("EA ", garbage( junk_list, ft_substr(line, 0, 3))))
+    {
+        s->EA = check_open(garbage(junk_list, ft_strtrim(&line[3], \
+            WHITE_SPACES)), line, scrape);
+    }
+    return (1);
 }
+
+int *process_RGB_data_extra(char **RGB)
+{
+    static int  out[3];
+
+    out[0] = ft_atoi(RGB[0]);
+    out[1] = ft_atoi(RGB[1]);
+    out[2] = ft_atoi(RGB[2]);
+    free(RGB[0]);
+    free(RGB[1]);
+    free(RGB[2]);
+    free(RGB);
+    if (!(range(out[0]) && range(out[1]) && range(out[2])))
+    {
+        ft_putstr_fd(ERR_RGB_RNG, 2);
+        exit(FAILED);
+    }
+    return out;
+}
+
 
 int *process_RGB_data(char *line, t_map_data **scrape)
 {
@@ -84,7 +82,6 @@ int *process_RGB_data(char *line, t_map_data **scrape)
         ft_putstr_fd(ERR_RGB_VAL, 2);
         exit(FAILED);
     }
-    
     RGB = ft_split(line, ',');
     len = (double_array_len(RGB));
     if (!RGB || !RGB[2] || !RGB[1] || !RGB[0] || len != 3)
@@ -94,22 +91,7 @@ int *process_RGB_data(char *line, t_map_data **scrape)
         ft_putstr_fd(ERR_RGB_VAL, 2);
         exit(FAILED);
     }
-
-    out[0] = ft_atoi(RGB[0]);
-    out[1] = ft_atoi(RGB[1]);
-    out[2] = ft_atoi(RGB[2]);
-
-    free(RGB[0]);
-    free(RGB[1]);
-    free(RGB[2]);
-    free(RGB);
-
-    if (!(range(out[0]) && range(out[1]) && range(out[2])))
-    {
-        ft_putstr_fd(ERR_RGB_RNG, 2);
-        exit(FAILED);
-    }
-    return out;
+    return process_RGB_data_extra(RGB);
 }
 
 int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
@@ -122,14 +104,18 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     s = *scrape;
     if (!ft_strcmp("C ", garbage(junk_list, ft_substr(line, 0, 2))))
     {
-        RGB = process_RGB_data(garbage(junk_list , ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
+        RGB = process_RGB_data(garbage(junk_list , \
+            ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, \
+                ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
         s->C[0] = RGB[0];
         s->C[1] = RGB[1];
         s->C[2] = RGB[2];
     }
     else if (!ft_strcmp("F ", garbage(junk_list, ft_substr(line, 0, 2))))
     {
-        RGB = process_RGB_data(garbage(junk_list , ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
+        RGB = process_RGB_data(garbage(junk_list , \
+            ft_strtrim( garbage(junk_list, ft_substr(&line[2], 0, \
+                ft_strlen(&line[2]) - 1)), WHITE_SPACES)), scrape);
         s->F[0] = RGB[0];
         s->F[1] = RGB[1];
         s->F[2] = RGB[2];
@@ -137,50 +123,7 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     return 1;
 }
 
-int get_MAP_val(t_maplines **scrape, char *line)
-{
 
-    if (line &&  ((line[0] != '1') || (line[ft_strlen(line) - 2]) != '1'))
-    {
-        return 1;
-    }
-    else
-    {
-        ft_lstadd_back_map(scrape, ft_lstnew_map(line));
-    }
-    return 1;
-}
-
-int	ft_lstsize(t_maplines *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst)
-    {
-        lst = lst->next;
-        i++;
-    }
-	return (i);
-}
-
-int get_greatest_line_len(char **raw_map)
-{
-    int i;
-    int len;
-    int max;
-    
-    i = 0;
-    max = 0;
-    while (raw_map[i])
-    {
-        len = ft_strlen(raw_map[i]);
-        if (len > max)
-            max = len;
-        i++;
-    }
-    return max;
-}
 
 
 char *append_zero(char *line, int max_len)
@@ -194,10 +137,8 @@ char *append_zero(char *line, int max_len)
     i = 0;
     len = ft_strlen(line);
     new_line = (char *)malloc(sizeof(char) * (max_len));
-
     if (!new_line)
         return NULL;
-    
     while (i < len && line[i] != '\n')
     {
         if (ft_strchr(WHITE_SPACES, line[i]))
@@ -207,12 +148,9 @@ char *append_zero(char *line, int max_len)
         i++;
     }
     while (i < max_len)
-    {
-        new_line[i] = '-';
-        i++;
-    }
+        new_line[i++] = '-';
     new_line[i] = '\0';
-    return new_line;
+    return (new_line);
 }
 
 
@@ -243,7 +181,6 @@ t_map_data *scraper(int fd, char **raw_map)
     t_garbage   *junk_list;
     t_map_data  *scrape;
 
-
     junk_list = NULL;
     scrape = (t_map_data *)malloc(sizeof(t_map_data));
     if (!scrape)
@@ -254,16 +191,13 @@ t_map_data *scraper(int fd, char **raw_map)
         garbage(&junk_list, line);
         if ((line && check_empty_line(line, &junk_list)))
             continue;
-        
         line = ft_strtrim(line, WHITE_SPACES);
         garbage(&junk_list, line);
-        
         get_textures_val(line, &scrape, &junk_list);
         get_RGB_val(line, &scrape, &junk_list);
-        
     }
     list_free(&junk_list);
     scrape->map = convert_map(raw_map);
     scrape->map_MINI = convert_map(raw_map);
-    return scrape;
+    return (scrape);
 }

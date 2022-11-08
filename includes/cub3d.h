@@ -216,4 +216,12 @@ char *trim_whitescapes(char *line);
 char **list_to_tab(t_maplines *list);
 int free_tab(char **tab);
 void free_list(t_maplines *list);
+char *check_open(char *path, char *line, t_map_data **scrape);
+int range(int n);
+int double_array_len(char **array);
+int count_char(char *line, char c);
+int get_MAP_val(t_maplines **scrape, char *line);
+int	ft_lstsize(t_maplines *lst);
+int get_greatest_line_len(char **raw_map);
+int check_walls(char **tab);
 #endif

@@ -45,25 +45,17 @@ void	list_free_map(t_map_data **list)
 	t_map_data	*l;
 	int i;
 
-
 	i = 0;
 	l = *list;
 	if (!l->map)
 		return ;
-	
 	while (l->map[i])
-	{
-		free(l->map[i]);
-		i++;
-	}
+		free(l->map[i++]);
 	free(l->map[i]);
 	free(l->map);
 	i = 0;
 	while (l->map_MINI[i])
-	{
-		free(l->map_MINI[i]);
-		i++;
-	}
+		free(l->map_MINI[i++]);
 	free(l->map_MINI[i]);
 	free(l->map_MINI);
 	free(l->NO);
@@ -71,6 +63,5 @@ void	list_free_map(t_map_data **list)
 	free(l->WE);
 	free(l->EA);
 	free(l);
-
 	return ;
 }
