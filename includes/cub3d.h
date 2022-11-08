@@ -207,4 +207,13 @@ void change_player_pos(t_map_data *ptr, int keycode);
 
 void open_door(t_map_data *ptr, int x, int y);
 void close_door(t_map_data *ptr, int x, int y);
+
+int valid_texture(char *line);
+int valid_map(char *line);
+int check_player_pos(char *line, int *is_player);
+int tab_len(char **tab);
+char *trim_whitescapes(char *line);
+char **list_to_tab(t_maplines *list);
+int free_tab(char **tab);
+void free_list(t_maplines *list);
 #endif

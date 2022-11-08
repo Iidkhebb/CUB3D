@@ -1,109 +1,91 @@
 #include "../../includes/cub3d.h"
 
-int basic_init(int ac, char *av[])
+int deepcheck_extra(char **tab, int i, int j)
 {
-    int fd;
-
-    if (ac != 2)
-        return (ft_putstr_fd(ERR_ARGS, 2), exit(FAILED), 1);
-    fd = open(av[1], O_RDONLY);
-    if (fd < 0 || ft_strcmp(&av[1][ft_strlen(av[1]) - 4], ".cub"))
-        return (ft_putstr_fd(ERR_PATH, 2), exit(FAILED), 1);
-    return fd;
-}
-
-int valid_texture(char *line)
-{
-    int i;
-    static int  total;
-    
-    i = 0;
-    if (!line)
-        return -1;
-    if (ft_strchr(TEXTURES_KEYS, line[i]) && ft_strchr(AFTER_KEY, line[i + 1]) && line[i + 2] == ' ') 
-        return (total += (int)line[i], 1);
-    if (ft_strchr(RGB_KEY, line[i]) && line[i + 1] == ' ')
-        return (total += (int)line[i], 1);
-    if (total != 454)
+    if((tab[i][j] == '0' && tab[i + 1][j] == ' ') || (tab[i][j] == '0' && tab[i - 1][j] == ' '))
         return (0);
-    return 454;
-}
-
-int valid_map(char *line)
-{
-    int i;
-    
-    i = 0;
-
-    if (!line)
-        return 1;
-
-    while (line[i] != '\n' && line[i] != '\0')
+    if (ft_strlen(tab[i]) > ft_strlen(tab[i - 1]))
     {
-        if (!ft_strchr(VALID_CHAR, line[i]))
-            return 0;
-        else 
-            i++;
+        if (tab[i][j] == '0' && j > ft_strlen(tab[i - 1]))
+            return (0);
     }
-    return 1;
-}
-
-int check_player_pos(char *line, int *is_player)
-{
-    int i;
-    if (!line)
-        return 1;
-    i = 0;
-    while (line[i] && line[i] !='\0')
+    else if (ft_strlen(tab[i]) > ft_strlen(tab[i + 1]))
     {
-        if (ft_strchr(PLAYER_POS, line[i]) && (line[i + 1] == '1' || line[i + 1] == '0'))
-        {
-            *is_player += 1;
-        }
-        
-   
-        if (ft_strchr(PLAYER_POS, line[i]) && (line[i + 1] == ' ' || line[i - 1] == ' '))
-        {
-            *is_player = 5;
-            return 0;
-        }
-        i++;
+        if (tab[i][j] == '0' && j > ft_strlen(tab[i + 1]))
+            return (0);
     }
-    return 0;
-}
-
-int tab_len(char **tab)
-{
-    int i;
-    i = 0;
-    while (tab[i])
-        i++;
-    return i;
+    return (1);
 }
 
 
-char *trim_whitescapes(char *line)
+int deep_check_walls_1(char **tab, int i, int j)
 {
-    int i;
+    if (deepcheck_extra(tab, i, j) == 0)
+        return (0);
+    if (ft_strchr("D", tab[i][j]) && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1') \
+         && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1'))
+    {
+        return (0);
+    }
+    else if (ft_strchr("D", tab[i][j]) && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1') \
+        && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1'))
+    {
+        return (0);
+    }
+    if (tab[i][j] == '0' && (tab[i][j + 1] == ' ' || tab[i][j - 1] == ' '))
+        return (0);
+    if (ft_strchr(PLAYER_POS, tab[i][j]) && (tab[i][j + 1] == '1' && tab[i][j - 1] == '1') \
+        && (tab[i + 1][j] == '1' && tab[i - 1][j] == '1'))
+    {
+        return (ft_putstr_fd("Error: PLayer invalid position\n", 2), 0);
+    }
+    return (1);
+}
+
+int check_first_line(char **tab)
+{
     int j;
-    char *tmp;
-    char *new_line;
 
-    i = 0;
     j = 0;
-    tmp = ft_strdup(line);
-    new_line = ft_calloc(ft_strlen(tmp) + 1, sizeof(char));
-    while (tmp[i] != '\n')
+    while (tab[0][j] != '\n')
     {
-        if (!ft_strchr(WHITE_SPACES, tmp[i]))
-        {
-            new_line[j] = tmp[i];
-            j++;
-        }
-        i++;
+        if (!ft_strchr(WHITE_SPACES, tab[0][j]) && tab[0][j] != '1')
+            return  (0);
+        j++;
     }
-    free(tmp);
-    return new_line;
+    return (1);
+}
+
+int check_last_line(char **tab, int last)
+{
+    int j;
+
+    j = 0;
+    while (tab[last][j]  != '\n' && tab[last][j] != '\0') // last one has no '\n'
+    {
+        if (!ft_strchr(" 1", tab[last][j]) && tab[last][j] != '1')
+            return (0);
+        j++;
+    }
+    return (1);
+}
+int check_inner_walls(char **tab, int i)
+{
+    char *trim;
+    int j;
+
+    j = 0;
+    trim = trim_whitescapes(tab[i]);
+    if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1') // checking if first and last char are '1'
+        return (0);
+    free(trim); 
+    while (tab[i][j] != '\0' && tab[i][j] != '\n')
+    {
+        if (!deep_check_walls_1(tab, i, j))
+            return (0);
+        j++;
+    }
+    return (1);
 }
 
 int check_walls(char **tab)
@@ -112,73 +94,23 @@ int check_walls(char **tab)
     int j;
     int p_count;
     char *trim;
+    int last;
 
     i = 0;
     p_count = 0;
-    int last = tab_len(tab) - 1;
+    last = tab_len(tab) - 1;
     while (tab[i])
     {
         j = 0;
         check_player_pos(tab[i], &p_count);
         if (!valid_map(tab[i]))
             return (0);
-        
-
-        if (i == 0) // checking first line to have only '1' or ' '
-        {
-            j = 0;
-            while (tab[0][j] != '\n')
-            {
-                if (!ft_strchr(WHITE_SPACES, tab[0][j]) && tab[0][j] != '1')
-                    return  (0);
-                j++;
-            }
-        }
-        else if (i == last) // checking last line to have only '1' or ' '
-        {
-            j = 0;
-            while (tab[last][j]  != '\n' && tab[last][j] != '\0') // last one has no '\n'
-            {
-                if (!ft_strchr(" 1", tab[last][j]) && tab[last][j] != '1')
-                    return (0);
-                j++;
-            }
-        }
-        else if (i != 0 && i != last) // checking inside
-        {
-            j = 0;
-            trim = trim_whitescapes(tab[i]);
-            if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1') // checking if first and last char are '1'
-                return (0);
-            free(trim); 
-            
-            while (tab[i][j] != '\0' && tab[i][j] != '\n')
-            {
-                if((tab[i][j] == '0' && tab[i + 1][j] == ' ') || (tab[i][j] == '0' && tab[i - 1][j] == ' '))
-                    return (0);
-                
-                if (ft_strlen(tab[i]) > ft_strlen(tab[i - 1]))
-                {
-                    if (tab[i][j] == '0' && j > ft_strlen(tab[i - 1]))
-                        return (0);
-                }
-                else if (ft_strlen(tab[i]) > ft_strlen(tab[i + 1]))
-                {
-                    if (tab[i][j] == '0' && j > ft_strlen(tab[i + 1]))
-                        return (0);
-                }
-                if (ft_strchr("D", tab[i][j]) && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1')  && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1'))
-                    return (0);
-                else if (ft_strchr("D", tab[i][j]) && (tab[i + 1][j] != '1' || tab[i - 1][j] != '1') && (tab[i][j + 1] != '1' || tab[i][j - 1] != '1'))
-                    return (0);
-                if (tab[i][j] == '0' && (tab[i][j + 1] == ' ' || tab[i][j - 1] == ' '))
-                    return (0);
-                if (ft_strchr(PLAYER_POS, tab[i][j]) && (tab[i][j + 1] == '1' && tab[i][j - 1] == '1') && (tab[i + 1][j] == '1' && tab[i - 1][j] == '1'))
-                    return (ft_putstr_fd("Error: PLayer invalid position\n", 2), 0);
-                j++;
-            }
-
-        }
+        if (!check_first_line(tab)) // checking first line to have only '1' or ' '
+            return (0);
+        else if (i == last && !check_last_line(tab, last)) // checking last line to have only '1' or ' '
+            return (0);
+        else if (i != 0 && i != last && !check_inner_walls(tab, i)) // checking inside
+            return (0);
         i++;
     }
     if (p_count != 1)
@@ -186,56 +118,6 @@ int check_walls(char **tab)
     return 1;
 }
 
-char *garbage(t_garbage **junk, char *line)
-{
-    if (!line)
-        return NULL;
-    ft_lstadd_back(junk, ft_lstnew(line));
-    return line;
-}
-
-char **list_to_tab(t_maplines *list)
-{
-    char **tab;
-    int i;
-    int size;
-
-    i = 0;
-    size = ft_lstsize(list);
-    tab = (char **)malloc(sizeof(char *) * (size + 1));
-    while (list)
-    {
-        tab[i] = list->line;
-        list = list->next;
-        i++;
-    }
-    tab[i] = NULL;
-    return tab;
-}
-
-int free_tab(char **tab)
-{
-    int i;
-    i = 0;
-    while (tab[i])
-    {
-        free(tab[i]);
-        i++;
-    }
-    free(tab);
-    return 0;
-}
-
-void free_list(t_maplines *list)
-{
-    t_maplines *tmp;
-    while (list)
-    {
-        tmp = list;
-        list = list->next;
-        free(tmp);
-    }
-}
 
 char **check_map(int fd)
 {
