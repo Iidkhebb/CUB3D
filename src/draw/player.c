@@ -6,11 +6,29 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 21:57:52 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:25:17 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:33:54 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+void	set_player_first_view_extra(t_map_data *ptr)
+{
+	if (ptr->p_view == 'E')
+	{
+		ptr->dirx = 0;
+		ptr->diry = 1;
+		ptr->planex = 0.66;
+		ptr->planey = 0;
+	}
+	else if (ptr->p_view == 'W')
+	{
+		ptr->dirx = 0;
+		ptr->diry = -1;
+		ptr->planex = -0.66;
+		ptr->planey = 0;
+	}
+}
 
 void	set_player_first_view(t_map_data *ptr)
 {
@@ -28,19 +46,9 @@ void	set_player_first_view(t_map_data *ptr)
 		ptr->planex = 0;
 		ptr->planey = -0.66;
 	}
-	else if (ptr->p_view == 'E')
+	else
 	{
-		ptr->dirx = 0;
-		ptr->diry = 1;
-		ptr->planex = 0.66;
-		ptr->planey = 0;
-	}
-	else if (ptr->p_view == 'W')
-	{
-		ptr->dirx = 0;
-		ptr->diry = -1;
-		ptr->planex = -0.66;
-		ptr->planey = 0;
+		set_player_first_view_extra(ptr);
 	}
 }
 

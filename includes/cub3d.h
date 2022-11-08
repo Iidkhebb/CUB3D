@@ -6,7 +6,7 @@
 /*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 22:21:39 by iidkhebb          #+#    #+#             */
-/*   Updated: 2022/11/08 22:31:50 by iidkhebb         ###   ########.fr       */
+/*   Updated: 2022/11/08 22:34:40 by iidkhebb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,10 +199,9 @@ void			mlx_warper(t_map_data *scrape);
 void			get_player_pos(t_map_data *ptr);
 void			get_player_pos(t_map_data *ptr);
 void			change_player_pos(t_map_data *ptr, int keycode);
-	
+
 void			open_door(t_map_data *ptr, int x, int y);
-void			close_door(t_map_data *ptr, int x, int y);
-	
+void			close_door(t_map_data *ptr, int x, int y);	
 int				valid_texture(char *line);
 int				valid_map(char *line);
 int				check_player_pos(char *line, int *is_player);
