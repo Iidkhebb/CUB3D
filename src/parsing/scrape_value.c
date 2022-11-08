@@ -1,24 +1,5 @@
 #include "../../includes/cub3d.h"
 
-char *check_open(char *path, char *line)
-{
-    int fd;
-    char *new_path;
-
-    new_path = ft_substr(path, 0, ft_strlen(path) - 1);
-    fd = open(new_path, O_RDONLY);
-    if (fd < 0)
-    {
-        free(line);
-        ft_putstr_fd(ERR_TEXTURES_PATH, 2);
-        close(fd);
-        exit(FAILED);
-    }
-    // free(new_path);
-    close(fd);
-    return new_path ;
-}
-
 int get_textures_val(char *line, t_map_data **scrape, t_garbage **junk_list)
 {
     t_map_data *s;
@@ -122,57 +103,6 @@ int get_RGB_val(char *line, t_map_data **scrape, t_garbage **junk_list)
     return 1;
 }
 
-
-
-
-char *append_zero(char *line, int max_len)
-{
-    int i;
-    int len;
-    char *new_line;
-
-    if (!line)
-        return NULL;
-    i = 0;
-    len = ft_strlen(line);
-    new_line = (char *)malloc(sizeof(char) * (max_len));
-    if (!new_line)
-        return NULL;
-    while (i < len && line[i] != '\n')
-    {
-        if (ft_strchr(WHITE_SPACES, line[i]))
-            new_line[i] = '-';
-        else
-            new_line[i] = line[i];
-        i++;
-    }
-    while (i < max_len)
-        new_line[i++] = '-';
-    new_line[i] = '\0';
-    return (new_line);
-}
-
-
-
-char **convert_map(char **raw_map)
-{
-    char **map;
-	int max;
-    int i;
-
-    if (!raw_map)
-        return NULL;
-    i = 0;
-    max = get_greatest_line_len(raw_map);
-    map = (char **)malloc(sizeof(char *) * ( tab_len(raw_map) + 1));
-    while (raw_map[i])
-    {
-        map[i] = append_zero(raw_map[i], max);
-        i++;
-    }
-    map[i] = NULL;
-	return map;
-}
 
 t_map_data *scraper(int fd, char **raw_map)
 {

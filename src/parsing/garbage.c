@@ -8,6 +8,23 @@ char *garbage(t_garbage **junk, char *line)
     return line;
 }
 
+int deepcheck_extra(char **tab, int i, int j)
+{
+    if((tab[i][j] == '0' && tab[i + 1][j] == ' ') || (tab[i][j] == '0' && tab[i - 1][j] == ' '))
+        return (0);
+    if ((int)ft_strlen(tab[i]) > (int)ft_strlen(tab[i - 1]))
+    {
+        if (tab[i][j] == '0' && j > (int)ft_strlen(tab[i - 1]))
+            return (0);
+    }
+    else if ((int)ft_strlen(tab[i]) > (int)ft_strlen(tab[i + 1]))
+    {
+        if (tab[i][j] == '0' && j > (int)ft_strlen(tab[i + 1]))
+            return (0);
+    }
+    return (1);
+}
+
 char **list_to_tab(t_maplines *list)
 {
     char **tab;

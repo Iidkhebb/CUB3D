@@ -12,23 +12,6 @@ int basic_init(int ac, char *av[])
     return fd;
 }
 
-int valid_texture(char *line)
-{
-    int i;
-    static int  total;
-    
-    i = 0;
-    if (!line)
-        return -1;
-    if (ft_strchr(TEXTURES_KEYS, line[i]) && ft_strchr(AFTER_KEY, line[i + 1]) && line[i + 2] == ' ') 
-        return (total += (int)line[i], 1);
-    if (ft_strchr(RGB_KEY, line[i]) && line[i + 1] == ' ')
-        return (total += (int)line[i], 1);
-    if (total != 454)
-        return (0);
-    return 454;
-}
-
 int valid_map(char *line)
 {
     int i;

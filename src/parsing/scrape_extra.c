@@ -45,12 +45,7 @@ int get_greatest_line_len(char **raw_map)
     return max;
 }
 
-int range(int n)
-{
-    if (n >= 0 && n <= 255)
-        return 1;
-    return 0;
-}
+
 
 int double_array_len(char **array)
 {
