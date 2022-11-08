@@ -191,7 +191,7 @@ void	list_free(t_garbage **list);
 int	ft_lstsize(t_maplines *lst);
 
 void ray_casting(t_map_data *ptr);
-void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color);
+void	mmpp(t_map_data *data, int x, int y, int color);
 int tab_len(char **tab);
 t_maplines	*ft_lstnew_map(char *line);
 t_maplines	*ft_lstlast_map(t_maplines *lst);
@@ -231,7 +231,7 @@ void set_draw_start_end(t_map_data *ptr, int side);
 void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side);
 void _d_mouvements(t_map_data *ptr);
 void _d_mouvemenst_sides(t_map_data *ptr);
-void	my_mlx_pixel_put(t_map_data *data, int x, int y, int color);
+void	mmpp(t_map_data *data, int x, int y, int color);
 int key_release(int keycode, t_map_data *ptr);
 int key_press(int keycode, t_map_data *ptr);
 int mouse_move_hook(int x, int y, t_map_data *ptr);

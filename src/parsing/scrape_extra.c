@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scrape_extra.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/08 22:15:42 by iidkhebb          #+#    #+#             */
+/*   Updated: 2022/11/08 22:16:42 by iidkhebb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
-int get_map_val(t_maplines **scrape, char *line)
+int	get_map_val(t_maplines **scrape, char *line)
 {
-    if (line &&  ((line[0] != '1') || (line[ft_strlen(line) - 2]) != '1'))
-    {
-        return 1;
-    }
-    else
-    {
-        ft_lstadd_back_map(scrape, ft_lstnew_map(line));
-    }
-    return 1;
+	if (line && ((line[0] != '1') || (line[ft_strlen(line) - 2]) != '1'))
+	{
+		return (1);
+	}
+	else
+	{
+		ft_lstadd_back_map(scrape, ft_lstnew_map(line));
+	}
+	return (1);
 }
 
 int	ft_lstsize(t_maplines *lst)
@@ -19,53 +31,53 @@ int	ft_lstsize(t_maplines *lst)
 
 	i = 0;
 	while (lst)
-    {
-        lst = lst->next;
-        i++;
-    }
+	{
+		lst = lst->next;
+		i++;
+	}
 	return (i);
 }
 
-int get_greatest_line_len(char **raw_map)
+int	get_greatest_line_len(char **raw_map)
 {
-    int i;
-    int len;
-    int max;
-    
-    i = 0;
-    max = 0;
-    while (raw_map[i])
-    {
-        len = ft_strlen(raw_map[i]);
-        if (len > max)
-            max = len;
-        i++;
-    }
-    return max;
+	int	i;
+	int	len;
+	int	max;
+
+	i = 0;
+	max = 0;
+	while (raw_map[i])
+	{
+		len = ft_strlen(raw_map[i]);
+		if (len > max)
+			max = len;
+		i++;
+	}
+	return (max);
 }
 
-int double_array_len(char **array)
+int	double_array_len(char **array)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (array[i])
-        i++;
-    return i;
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
 }
 
-int count_char(char *line, char c)
+int	count_char(char *line, char c)
 {
-    int i;
-    int count;
+	int	i;
+	int	count;
 
-    i = 0;
-    count = 0;
-    while (line[i])
-    {
-        if (line[i] == c)
-            count++;
-        i++;
-    }
-    return count;
+	i = 0;
+	count = 0;
+	while (line[i])
+	{
+		if (line[i] == c)
+			count++;
+		i++;
+	}
+	return (count);
 }

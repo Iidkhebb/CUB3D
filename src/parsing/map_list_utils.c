@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_list_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/08 22:14:47 by iidkhebb          #+#    #+#             */
+/*   Updated: 2022/11/08 22:15:01 by iidkhebb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 t_maplines	*ft_lstnew_map(char *line)
@@ -9,7 +21,6 @@ t_maplines	*ft_lstnew_map(char *line)
 		return (0);
 	
 	new->line = ft_strdup(line);
-	// printf("%s", new->line);
 	new->next = NULL;
 	return (new);
 }
@@ -43,7 +54,7 @@ void	ft_lstadd_back_map(t_maplines **lst, t_maplines *new)
 void	list_free_map(t_map_data **list)
 {
 	t_map_data	*l;
-	int i;
+	int			i;
 
 	i = 0;
 	l = *list;

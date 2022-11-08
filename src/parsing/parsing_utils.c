@@ -1,15 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iidkhebb <iidkhebb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/08 22:15:08 by iidkhebb          #+#    #+#             */
+/*   Updated: 2022/11/08 22:15:37 by iidkhebb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
-int check_empty_line(char *line)
+int	check_empty_line(char *line)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (ft_strlen(line) == 0 || line[0] == '\n')
-		return 1;
+	i = 0;
+	if (ft_strlen(line) == 0 || line[0] == '\n')
+		return (1);
 	return (0);
 }
-
 
 t_garbage	*ft_lstnew(char *junk)
 {
@@ -18,7 +29,6 @@ t_garbage	*ft_lstnew(char *junk)
 	new = (t_garbage *)malloc(sizeof(t_garbage));
 	if (!(new))
 		return (0);
-	
 	new->garbage_lines = junk;
 	new->next = NULL;
 	return (new);
@@ -55,7 +65,6 @@ void	list_free(t_garbage **list)
 	t_garbage	*tmp;
 	t_garbage	*l;
 
-	
 	l = *list;
 	if (!l)
 		return ;
