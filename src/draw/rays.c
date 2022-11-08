@@ -1,49 +1,31 @@
 #include "../../includes/cub3d.h"
 
-void set_which_textures(t_map_data *ptr, int side)
+void check_frames(t_map_data *ptr, int *i, int *frames)
 {
-
-        if (side == 0 )
+    if(ptr->tex_index == 5)
+    {
+        *frames = *frames + 1;
+        ptr->tex_index = *i;
+        if (*frames < 6000)
         {
-            if (ptr->rayDirX > 0)
-                ptr->tex_index = 5;
-            else    
-                ptr->tex_index = 0;
+            if (*i == 10)
+                *i = 5;
         }
-        else 
+        else
         {
-            if (ptr->rayDirY > 0)
-                ptr->tex_index = 3;
-            else
-                ptr->tex_index = 2;
-        }
-        if(ptr->door_open)
-            ptr->tex_index = 4;
-
-}
-
-unsigned int	get_color(t_textures *ptr, int x, int y)
-{
-	char	*color;
-	int		pixel;
-
-	pixel = (y * ptr->size_line) + (x * (ptr->bpp / 8));
-	color = ptr->data + pixel;
-	return (create_trgb(0, (unsigned char)color[2],
-			(unsigned char)color[1], (unsigned char)color[0]));
-}
-
-int  calc_tex_x(t_map_data *ptr, int side)
-{
-    double wallx;
-
-    if (side == 0) {
-        wallx = ptr->posY + (ptr->perpWallDist * ptr->rayDirY);
-    } else {
-        wallx = ptr->posX + (ptr->perpWallDist * ptr->rayDirX);
+            *frames = 0;
+            *i = *i + 1;
+        }  
     }
-    wallx -= (int)wallx;
-    return(wallx * ((double)ptr->tex[ptr->tex_index].img_width));
+}
+
+void check_screen_H(t_map_data *ptr, double *step)
+{
+    *step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineHeight;
+    if (ptr->lineHeight < HEIGHT)
+        ptr->tex_pos = 0;
+    else 
+        ptr->tex_pos = ((ptr->lineHeight / 2) - (HEIGHT / 2)) * *step;
 }
 
 void draw_screen(t_map_data *ptr, int side, int x) 
@@ -52,16 +34,12 @@ void draw_screen(t_map_data *ptr, int side, int x)
     int tex_y;
     double step;
     int y;
+    static int frames = 0;
+    static int i = 5;
     
     y = -1;
-    static int i = 5;
-    static int frames = 0;
     tex_x = calc_tex_x(ptr, side);
-    step = (double)ptr->tex[ptr->tex_index].img_height / ptr->lineHeight;
-    if (ptr->lineHeight < HEIGHT)
-        ptr->tex_pos = 0;
-    else 
-        ptr->tex_pos = ((ptr->lineHeight / 2) - (HEIGHT / 2)) * step;
+    check_screen_H(ptr, &step);
     while (y++ < HEIGHT)
     {
         if (y < ptr->drawStart)
@@ -69,25 +47,7 @@ void draw_screen(t_map_data *ptr, int side, int x)
         else if (y >= ptr->drawStart && y <= ptr->drawEnd)
         {
             tex_y = (int)ptr->tex_pos % ptr->tex[ptr->tex_index].img_height;
-            if(ptr->tex_index == 5)
-            {
-                    frames++;
-                    
-                    ptr->tex_index = i;
-                    
-                    if (frames < 6000)
-                    {
-                        if (i == 10)
-                            i = 5;
-                
-                    }
-                    else
-                    {
-                        frames = 0;
-                        i++;
-                    }
-                    
-            }
+            check_frames(ptr, &i, &frames);
             my_mlx_pixel_put(ptr, x, y, get_color(&ptr->tex[ptr->tex_index], tex_x, tex_y));
             ptr->tex_pos += step;
         }
@@ -122,39 +82,32 @@ void validatd_DIR(t_map_data *ptr, int mapX,int mapY)
     }
 }
 
-void set_draw_start_end(t_map_data *ptr, int side)
+void ray_casting_extra(t_map_data *ptr, int mapX, int mapY)
 {
-    if (side == 0)
-        ptr->perpWallDist = (ptr->sideDistX - ptr->deltaDistX);
-    else
-        ptr->perpWallDist = (ptr->sideDistY - ptr->deltaDistY);
-    ptr->lineHeight = (int)(HEIGHT / ptr->perpWallDist);
-    ptr->drawStart = (-ptr->lineHeight / 2) + (HEIGHT / 2);
-    if (ptr->drawStart < 0)
-        ptr->drawStart = 0;
-    ptr->drawEnd = (ptr->lineHeight / 2) + (HEIGHT / 2);
-    if (ptr->drawEnd >= HEIGHT)
-        ptr->drawEnd = HEIGHT - 1;
+    if(ptr->map[mapX][mapY] == 'D')
+    {
+        ptr->door_open = true;
+        if (ptr->is_open == 1)
+            open_door(ptr, mapX, mapY);
+        ptr->save_door_x = mapX;
+        ptr->save_door_y = mapY;
+    }
+    else if (ptr->is_open == 0)
+    {
+        ptr->map[ptr->save_door_x][ptr->save_door_y] = 'D';
+    }
 }
 
-void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side)
+void ray_casting_extra_2(t_map_data *ptr, int *mapX, int *mapY, int x)
 {
-    
-        if (ptr->sideDistX < ptr->sideDistY)
-        {
-            ptr->sideDistX += ptr->deltaDistX;
-            *mapX += ptr->stepX;
-            *side = 0;
-        }
-        else
-        {
-            ptr->sideDistY += ptr->deltaDistY;
-            *mapY += ptr->stepY;
-            *side = 1;
-        }
-
+    ptr->cameraX = (2 * x) / (double)WIDTH - 1;
+    ptr->rayDirX = ptr->dirX + ptr->planeX * ptr->cameraX;
+    ptr->rayDirY = ptr->dirY + ptr->planeY * ptr->cameraX;
+    *mapX = (int)ptr->posX;
+    *mapY = (int)ptr->posY;
+    ptr->deltaDistX = fabs(1 / ptr->rayDirX);
+    ptr->deltaDistY = fabs(1 / ptr->rayDirY);
 }
-
 
 void ray_casting(t_map_data *ptr)
 {
@@ -168,34 +121,16 @@ void ray_casting(t_map_data *ptr)
     side = 0;
     while (x++ < WIDTH)
     {
-        ptr->cameraX = (2 * x) / (double)WIDTH - 1;
-        ptr->rayDirX = ptr->dirX + ptr->planeX * ptr->cameraX;
-        ptr->rayDirY = ptr->dirY + ptr->planeY * ptr->cameraX;
-        mapX = (int)ptr->posX;
-        mapY = (int)ptr->posY;
-        ptr->deltaDistX = fabs(1 / ptr->rayDirX);
-        ptr->deltaDistY = fabs(1 / ptr->rayDirY);
+        ray_casting_extra_2(ptr, &mapX, &mapY, x);
         hit = 0;
         validatd_DIR(ptr, mapX,mapY);
         while (hit == 0)
         {
             ptr->door_open = false;
             check_wall_hit(ptr, &mapY, &mapX, &side);
-            if (ptr->map[mapX][mapY] != '0') hit = 1;
-            
-            if(ptr->map[mapX][mapY] == 'D')
-            {
-                ptr->door_open = true;
-                if (ptr->is_open == 1)
-                    open_door(ptr, mapX, mapY);
-                ptr->save_door_x = mapX;
-                ptr->save_door_y = mapY;
-            }
-            else if (ptr->is_open == 0)
-            {
-                ptr->map[ptr->save_door_x][ptr->save_door_y] = 'D';
-            }
-
+            if (ptr->map[mapX][mapY] != '0') 
+                hit = 1;
+            ray_casting_extra(ptr, mapX, mapY);
         }
         set_draw_start_end(ptr, side);
         set_which_textures(ptr, side);

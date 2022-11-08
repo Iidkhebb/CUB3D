@@ -224,4 +224,9 @@ int get_MAP_val(t_maplines **scrape, char *line);
 int	ft_lstsize(t_maplines *lst);
 int get_greatest_line_len(char **raw_map);
 int check_walls(char **tab);
+int  calc_tex_x(t_map_data *ptr, int side);
+unsigned int	get_color(t_textures *ptr, int x, int y);
+void set_which_textures(t_map_data *ptr, int side);
+void set_draw_start_end(t_map_data *ptr, int side);
+void check_wall_hit(t_map_data *ptr, int *mapY,int *mapX, int *side);
 #endif

@@ -61,7 +61,7 @@ void get_player_pos(t_map_data *ptr)
         j = 0;
         while (ptr->map[i][j])
         {
-            if (ptr->map[i][j] == 'N' || ptr->map[i][j] == 'S' || ptr->map[i][j] == 'E' || ptr->map[i][j] == 'W')
+            if (ft_strchr(PLAYER_POS, ptr->map[i][j]))
             {
                 ptr->p_x = i;
                 ptr->p_y = j;
